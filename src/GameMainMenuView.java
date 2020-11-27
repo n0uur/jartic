@@ -69,4 +69,27 @@ public class GameMainMenuView {
         this.isShowingJoinMenu = showing;
     }
 
+    public JTextField getNameTextField() {
+        return nameTextField;
+    }
+
+    public JTextField getIpTextField() {
+        return ipTextField;
+    }
+
+    public JButton getHostGameButton() {
+        return hostGameButton;
+    }
+
+    public JButton getJoinGameButton() {
+        return joinGameButton;
+    }
+
+    public JButton getBackFromJoinButton() {
+        return backFromJoinButton;
+    }
+
+    public JButton getConnectButton() {
+        return connectButton;
+    }
 }
