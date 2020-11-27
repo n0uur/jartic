@@ -1,6 +1,6 @@
 package GameClient.UI;
 
-import GameClient.Drawable;
+import GameClient.UI.Drawable;
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 
@@ -24,7 +24,7 @@ public class Button implements Drawable {
         txtSize = MeasureTextEx(LoadFont("src/Test/supermarket.ttf"), txt, 32, 1);
     }
 
-    public void draw() {
+    public void drawGraphic() {
         DrawRectangleRec(rect, VIOLET);
         DrawText(txt, x + ((int) txtSize.x()/2) - width + (int) txtSize.x(), y + (int) txtSize.y()/2, 32, BLACK);
     }
