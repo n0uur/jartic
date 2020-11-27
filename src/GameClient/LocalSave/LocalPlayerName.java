@@ -21,7 +21,7 @@ public class LocalPlayerName {
 
     public static void setPlayerName(String name) {
         playerName = name;
-        savePlayerName();
+        savePlayerName(name);
     }
 
     public static void loadPlayerName() {
@@ -41,15 +41,15 @@ public class LocalPlayerName {
         }
     }
 
-    public static void savePlayerName() {
+    public static void savePlayerName(String name) {
         File playerNameFile = new File(saveFileName);
         if(playerNameFile.exists()) {
             playerNameFile.delete();
             GameLog.Log("deleted old save..");
         }
         try(FileOutputStream fOut = new FileOutputStream(playerNameFile);) {
-            for(int i = 0; i < playerName.length(); i++) {
-                fOut.write(playerName.charAt(i));
+            for(int i = 0; i < name.length(); i++) {
+                fOut.write(name.charAt(i));
             }
             GameLog.Log("saved new name successfully..");
         }

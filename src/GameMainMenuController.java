@@ -1,3 +1,5 @@
+import GameClient.LocalSave.LocalPlayerName;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +13,9 @@ public class GameMainMenuController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        LocalPlayerName.setPlayerName(this.gameMainMenuView.getNameTextField().getText());
+
         if(e.getSource().equals(this.gameMainMenuView.getJoinGameButton())) {
             this.gameMainMenuView.setShowingJoinMenu(true);
         }
