@@ -1,3 +1,4 @@
+import GameClient.LocalSave.LocalPlayerName;
 import Shared.Logger.GameLog;
 
 import javax.swing.*;
@@ -27,7 +28,11 @@ public class GameMainMenuView {
 
         this.topPanel = new JPanel();
         this.nameLabel = new JLabel("Enter your name :");
-        this.nameTextField = new JTextField();
+
+        if (LocalPlayerName.getPlayerName() != null) {
+            this.nameTextField = new JTextField(LocalPlayerName.getPlayerName());
+        } else
+            this.nameTextField = new JTextField();
 
         this.topPanel.setLayout(new GridLayout(1, 2));
         this.topPanel.add(this.nameLabel);
@@ -119,5 +124,9 @@ public class GameMainMenuView {
 
     public JButton getConnectButton() {
         return connectButton;
+    }
+
+    public JFrame getMainMenuFrame() {
+        return mainMenuFrame;
     }
 }

@@ -23,7 +23,7 @@ public class GameMainMenuController implements ActionListener {
         else if (e.getSource().equals(this.gameMainMenuView.getConnectButton())) {
             String ip = this.gameMainMenuView.getIpTextField().getText();
             String name = this.gameMainMenuView.getNameTextField().getText();
-            //this.gameMainMenuView.dispose();
+            this.gameMainMenuView.getMainMenuFrame().dispose();
         }
     }
 }
