@@ -1,4 +1,6 @@
-package Shared;
+package Shared.GamePacket;
+
+import Shared.CanSendAsPacket;
 
 public abstract class Packet implements CanSendAsPacket {
     public static enum PacketID {
