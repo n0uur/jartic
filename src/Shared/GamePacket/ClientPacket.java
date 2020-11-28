@@ -1,9 +1,7 @@
 package Shared.GamePacket;
 
-import Shared.CanSendAsPacket;
-
-public abstract class ClientPacket extends Packet implements CanSendAsPacket {
-    public void sendToServer() {
-        // todo..
-    }
+public abstract class ClientPacket extends Packet {
+//    public void sendToServer() {
+//        // todo..
+//    }
 }
