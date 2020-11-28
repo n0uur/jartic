@@ -8,6 +8,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SwingUtilities.invokeLater(() -> {new Game();});
+        SwingUtilities.invokeLater(Game::new);
     }
 }
