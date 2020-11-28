@@ -36,4 +36,8 @@ public class GameServerController {
         this.packets.add(clientPacket);
     }
 
+    public ArrayList<ClientPacket> getPackets() {
+        return this.packets;
+    }
+
 }
