@@ -2,6 +2,7 @@ import GameClient.LocalSave.LocalPlayerName;
 import Shared.Logger.GameLog;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 
 public class GameMainMenuView {
@@ -37,6 +38,7 @@ public class GameMainMenuView {
         this.topPanel.setLayout(new GridLayout(1, 2));
         this.topPanel.add(this.nameLabel);
         this.topPanel.add(this.nameTextField);
+        this.topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         this.mainPanel = new JPanel();
         this.hostGameButton = new JButton("Host");
@@ -59,6 +61,7 @@ public class GameMainMenuView {
 
         joinTopPanel.add(this.ipLabel);
         joinTopPanel.add(this.ipTextField);
+        joinTopPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
 
         JPanel joinBottomPanel = new JPanel();
         joinBottomPanel.setLayout(new FlowLayout());
@@ -87,10 +90,12 @@ public class GameMainMenuView {
         if(this.isShowingJoinMenu) {
             this.mainMenuFrame.remove(this.mainPanel);
             this.mainMenuFrame.add(this.joinPanel, BorderLayout.CENTER);
+            this.mainMenuFrame.setSize(this.mainMenuFrame.getWidth(), 160);
         }
         else {
             this.mainMenuFrame.remove(this.joinPanel);
             this.mainMenuFrame.add(this.mainPanel, BorderLayout.CENTER);
+            this.mainMenuFrame.setSize(this.mainMenuFrame.getWidth(), 140);
         }
         this.mainMenuFrame.revalidate();
         this.mainMenuFrame.repaint();
