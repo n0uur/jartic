@@ -14,12 +14,13 @@ public class GameClientView {
     Font font;
     Jaylib.Vector2 currentDrawingPositionText, playerPositionText;
 
-    public GameClientView() {
+    public GameClientView(GameClientController g) {
         InitWindow(1280, 720, "Jartic");
         font = new Font(LoadFont("resource/FC Iconic Regular.ttf"));
 
         drawBoard = new DrawBoard();
         chatBox = new ChatBox();
+        chatBox.addInteractionListener(g);
 
         allPlayerFrame = new Rectangle();
         allPlayerFrame.width((int) (GetScreenWidth() * 0.25));
