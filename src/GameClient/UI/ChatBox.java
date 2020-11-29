@@ -2,6 +2,7 @@ package GameClient.UI;
 
 import GameClient.Interactable;
 import GameClient.InteractionListener;
+import com.raylib.Raylib;
 
 import static com.raylib.Jaylib.*;
 
@@ -11,6 +12,8 @@ public class ChatBox implements Interactable, Drawable, Runnable {
     Font font;
     String text;
     boolean isSelectTextField = false;
+
+    private long lastCheck = System.currentTimeMillis();
 
     public ChatBox() {
         font = new Font(LoadFont("resource/FC Iconic Regular.ttf"));
@@ -32,8 +35,8 @@ public class ChatBox implements Interactable, Drawable, Runnable {
         textField.x(chatBox.x() + 5);
         textField.y(chatBox.y() + chatBox.height() - textField.height() - 5);
 
-//        Thread textFieldCheck = new Thread(this);
-//        textFieldCheck.run()
+        Thread textFieldCheck = new Thread(this);
+        textFieldCheck.start();
     }
 
     public void addInteractionListener(InteractionListener e) {
@@ -56,17 +59,12 @@ public class ChatBox implements Interactable, Drawable, Runnable {
     @Override
     public void run() {
         while (true) {
+            long currentTime = System.currentTimeMillis();
             if (this.interactionListener != null) {
-                if (CheckCollisionPointRec(GetMousePosition(), textField)) {
+                if (CheckCollisionPointRec(GetMousePosition(), textField) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
                     System.out.println("Mouse Pressed");
                 }
             }
-        }
-    }
-
-    public void mouseClickedOnTextField() {
-        if (CheckCollisionPointRec(GetMousePosition(), textField) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            System.out.println("Mouse Pressed");
         }
     }
 }

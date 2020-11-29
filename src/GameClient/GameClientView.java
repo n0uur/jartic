@@ -19,7 +19,9 @@ public class GameClientView {
         font = new Font(LoadFont("resource/FC Iconic Regular.ttf"));
 
         drawBoard = new DrawBoard();
+
         chatBox = new ChatBox();
+
         chatBox.addInteractionListener(g);
 
         allPlayerFrame = new Rectangle();
@@ -35,6 +37,9 @@ public class GameClientView {
         playerPositionText = new Jaylib.Vector2();
         playerPositionText.x(15 + ((int) (GetScreenWidth() * 0.25) - 10 - MeasureTextEx(font, "PLAYER",40, 1).x())/2);
         playerPositionText.y(25);
+
+        System.out.println("Draw");
+
         while(!WindowShouldClose()) {
 
             BeginDrawing();
@@ -53,11 +58,10 @@ public class GameClientView {
 //            for (int i = 0; i<9;i++)
 //                DrawRectangleLines(15, 84 + (69*i), (int) (GetScreenWidth() * 0.25) - 10, 67, BLACK);
 
-
             chatBox.drawGraphic();
             chatBox.drawText("test\nsdfsdfsdfs\nasadasdas\nasdasda\nasdasd");
             chatBox.drawTextField();
-            chatBox.mouseClickedOnTextField();
+//            chatBox.mouseClickedOnTextField();
             EndDrawing();
         }
 
