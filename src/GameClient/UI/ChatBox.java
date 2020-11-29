@@ -5,7 +5,7 @@ import GameClient.InteractionListener;
 
 import static com.raylib.Jaylib.*;
 
-public class ChatBox implements Interactable, Drawable , Runnable{
+public class ChatBox implements Interactable, Drawable, Runnable {
     Rectangle chatBox, textBox, textField;
     private InteractionListener interactionListener;
     Font font;
@@ -32,8 +32,8 @@ public class ChatBox implements Interactable, Drawable , Runnable{
         textField.x(chatBox.x() + 5);
         textField.y(chatBox.y() + chatBox.height() - textField.height() - 5);
 
-        Thread textFieldCheck = new Thread(this);
-        textFieldCheck.run();
+//        Thread textFieldCheck = new Thread(this);
+//        textFieldCheck.run()
     }
 
     public void addInteractionListener(InteractionListener e) {
@@ -53,6 +53,7 @@ public class ChatBox implements Interactable, Drawable , Runnable{
         DrawRectangleLinesEx(textField, 1, BLACK);
     }
 
+    @Override
     public void run() {
         while (true) {
             if (this.interactionListener != null) {
@@ -60,6 +61,12 @@ public class ChatBox implements Interactable, Drawable , Runnable{
                     System.out.println("Mouse Pressed");
                 }
             }
+        }
+    }
+
+    public void mouseClickedOnTextField() {
+        if (CheckCollisionPointRec(GetMousePosition(), textField) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            System.out.println("Mouse Pressed");
         }
     }
 }

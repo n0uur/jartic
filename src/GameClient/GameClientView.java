@@ -57,6 +57,7 @@ public class GameClientView {
             chatBox.drawGraphic();
             chatBox.drawText("test\nsdfsdfsdfs\nasadasdas\nasdasda\nasdasd");
             chatBox.drawTextField();
+            chatBox.mouseClickedOnTextField();
             EndDrawing();
         }
 
