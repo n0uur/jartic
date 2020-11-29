@@ -4,7 +4,6 @@ import Shared.GamePacket.ClientPacket;
 import Shared.Logger.ServerLog;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import netscape.javascript.JSObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
