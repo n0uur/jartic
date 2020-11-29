@@ -1,4 +1,6 @@
 import GameClient.LocalSave.LocalPlayerName;
+import Shared.GamePacket.C2S_JoinGame;
+import Shared.Model.GameConfig;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,9 +28,16 @@ public class GameMainMenuController implements ActionListener {
 
         }
         else if (e.getSource().equals(this.gameMainMenuView.getConnectButton())) {
-            String ip = this.gameMainMenuView.getIpTextField().getText();
-            String name = this.gameMainMenuView.getNameTextField().getText();
-            this.gameMainMenuView.getMainMenuFrame().dispose();
+
+            String serverIp = this.gameMainMenuView.getIpTextField().getText();
+
+            GameConfig.setServerAddress(serverIp);
+
+            C2S_JoinGame joinGamePacket = new C2S_JoinGame();
+            joinGamePacket.playerName = LocalPlayerName.getPlayerName();
+            joinGamePacket.sendToServer();
+
+//            this.gameMainMenuView.getMainMenuFrame().dispose();
         }
     }
 }
