@@ -16,7 +16,7 @@ public class GameClientView {
 
     public GameClientView(GameClientController g) {
         InitWindow(1280, 720, "Jartic");
-        font = new Font(LoadFont("resource/FC Iconic Regular.ttf"));
+        font = new Font(LoadFont("resource/FCIconic.ttf"));
 
         drawBoard = new DrawBoard();
 

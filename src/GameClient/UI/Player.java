@@ -30,8 +30,8 @@ public class Player {
         this.image = bfImg.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
         this.playerIcon = new ImageIcon(this.image);
         this.playerImage = new JLabel(this.playerIcon);
-        this.playerName.setFont(this.playerName.getFont().deriveFont(20f));
-        this.playerScoreLabel.setFont(this.playerName.getFont().deriveFont(16f));
+        this.playerName.setFont(FontManager.getFont().deriveFont(24f));
+        this.playerScoreLabel.setFont(FontManager.getFont().deriveFont(18f));
 
         this.padding = BorderFactory.createEmptyBorder(5, 20, 5, 10);
         this.playerInfoPanel.setBorder(this.padding);
@@ -43,7 +43,7 @@ public class Player {
         this.playerPanel.add(this.playerImage, BorderLayout.WEST);
         this.playerPanel.add(this.playerInfoPanel, BorderLayout.CENTER);
 
-        this.playerPanel.setPreferredSize(new Dimension (290, 60));
+        this.playerPanel.setPreferredSize(new Dimension (290, 70));
 
     }
 

@@ -16,7 +16,7 @@ public class ChatBox implements Interactable, Drawable, Runnable {
     private long lastClick = System.currentTimeMillis();
 
     public ChatBox() {
-        font = new Font(LoadFont("resource/FC Iconic Regular.ttf"));
+        font = new Font(LoadFont("resource/FCIconic.ttf"));
         chatBox = new Rectangle();
         chatBox.width(GetScreenWidth() - (int) (GetScreenWidth() * 0.25) - 30);
         chatBox.height((int) (660*0.28));
