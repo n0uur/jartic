@@ -13,7 +13,7 @@ public class ChatBox implements Interactable, Drawable, Runnable {
     String text;
     boolean isSelectTextField = false;
 
-    private long lastCheck = System.currentTimeMillis();
+    private long lastClick = System.currentTimeMillis();
 
     public ChatBox() {
         font = new Font(LoadFont("resource/FC Iconic Regular.ttf"));
@@ -62,7 +62,10 @@ public class ChatBox implements Interactable, Drawable, Runnable {
             long currentTime = System.currentTimeMillis();
             if (this.interactionListener != null) {
                 if (CheckCollisionPointRec(GetMousePosition(), textField) && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
-                    System.out.println("Mouse Pressed");
+                    if(currentTime - lastClick > 50) {
+                        System.out.println("Mouse Pressed");
+                        lastClick = currentTime;
+                    }
                 }
             }
         }
