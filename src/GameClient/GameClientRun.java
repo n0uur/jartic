@@ -4,10 +4,9 @@ import GameClient.UI.FontManager;
 import GameClient.UI.Player;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.*;
+import java.awt.event.*;
 
-public class GameClientRun extends javax.swing.JFrame {
+public class GameClientRun extends javax.swing.JFrame implements MouseListener, Runnable, MouseMotionListener {
 
     /**
      * Creates new form GameClientRun
@@ -34,6 +33,7 @@ public class GameClientRun extends javax.swing.JFrame {
         chatLogMsg = new javax.swing.JTextArea();
         chatMsgInput = new javax.swing.JTextField();
         currentDrawing = new javax.swing.JLabel();
+        thisPlayerName = "Test 1";
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jartic");
@@ -52,33 +52,17 @@ public class GameClientRun extends javax.swing.JFrame {
         for(int i = 1; i < 12; i++)
             playerList.add(new Player("Tester " + i).getPlayerPanel());
 
+        canvas1.setSize(900, 400);
         canvas1.setBackground(new java.awt.Color(255, 255, 255));
-        canvas1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                canvas1MousePressed(evt);
-            }
-        });
+        canvas1.addMouseListener(this);
+        canvas1.addMouseMotionListener(this);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addContainerGap(395, Short.MAX_VALUE)
-                                .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
+        this.jPanel2.add(this.canvas1);
 
         chatLogMsg.setEditable(false);
-        chatLogMsg.setColumns(20);
+        chatLogMsg.setColumns(35);
         chatLogMsg.setRows(5);
+        chatLogMsg.setLineWrap(true);
 
 
         chatLogMsg.setFont(FontManager.getFont());
@@ -86,12 +70,7 @@ public class GameClientRun extends javax.swing.JFrame {
         jScrollPane1.setViewportView(chatLogMsg);
 
         chatMsgInput.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        chatMsgInput.setFont(chatMsgInput.getFont().deriveFont(18f));
-        chatMsgInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chatMsgInputActionPerformed(evt);
-            }
-        });
+        chatMsgInput.setFont(FontManager.getFont());
         chatMsgInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 chatMsgInputKeyPressed(evt);
@@ -118,7 +97,9 @@ public class GameClientRun extends javax.swing.JFrame {
         );
 
         currentDrawing.setFont(FontManager.getFont().deriveFont(36f)); // NOI18N
-        currentDrawing.setText("Current Drawing :");
+        currentDrawing.setText("Current Drawing : ");
+        drawingPlayer = "Tester 1";
+        currentDrawing.setText(currentDrawing.getText() + drawingPlayer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,12 +136,29 @@ public class GameClientRun extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    private void chatMsgInputActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
 
-    private void canvas1MousePressed(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
+    @Override
+    public void mousePressed(MouseEvent e) {
+        mouseBtn = e.getButton();
+        Thread canvasUpdate = new Thread(this);
+        canvasUpdate.start();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        isClicked = !isClicked;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 
     private void chatMsgInputKeyPressed(java.awt.event.KeyEvent evt) {
@@ -168,8 +166,51 @@ public class GameClientRun extends javax.swing.JFrame {
             sendChatText();
     }
     private void sendChatText() {
-        this.chatLogMsg.setText(this.chatLogMsg.getText() + this.chatMsgInput.getText() + '\n');
-        this.chatMsgInput.setText(null);
+        if(!this.chatMsgInput.getText().isEmpty()) {
+            String msgToSend = this.thisPlayerName + " : " + this.chatMsgInput.getText() + '\n';
+            this.chatLogMsg.setText(this.chatLogMsg.getText() + msgToSend);
+            this.chatMsgInput.setText(null);
+        }
+    }
+    private void doDrawing(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        try {
+             posXMouse = (int) this.canvas1.getMousePosition().getX();
+             posYMouse = (int) this.canvas1.getMousePosition().getY();
+            if(mouseBtn == 1) {
+                g2d.setPaint(Color.black);
+                g2d.fillOval(posXMouse, posYMouse, 5, 5);
+                drawPoints[posXMouse][posYMouse] = 1;
+            }
+            else if(mouseBtn == 3) {
+                g2d.setPaint(Color.white);
+                g2d.fillOval(posXMouse, posYMouse, 15, 15);
+                drawPoints[posXMouse][posYMouse] = 0;
+            }
+        }catch (NullPointerException e){}
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        doDrawing(canvas1.getGraphics());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            canvas1.repaint();
+            for(int i = 0; i < 900; i++) {
+                for(int j = 0; j < 400; j++) {
+                    if(drawPoints[i][j] == 1) {
+                        canvas1.getGraphics().fillOval(i, j, 5, 5);
+                    }
+                }
+            }
+        }
     }
     /**
      * @param args the command line arguments
@@ -181,11 +222,7 @@ public class GameClientRun extends javax.swing.JFrame {
             e.printStackTrace();
         }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GameClientRun().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new GameClientRun().setVisible(true));
     }
 
     // Variables declaration - do not modify
@@ -198,5 +235,11 @@ public class GameClientRun extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel player;
     private javax.swing.JPanel playerList;
+    private String drawingPlayer;
+    private String thisPlayerName;
+    private boolean isClicked = false;
+    private int mouseBtn, posXMouse, posYMouse;
+    private int[][] drawPoints = new int[900][400];
+
     // End of variables declaration
 }
