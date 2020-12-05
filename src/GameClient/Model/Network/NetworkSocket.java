@@ -1,4 +1,4 @@
-package GameClient.Network;
+package GameClient.Model.Network;
 
 import java.net.DatagramSocket;
 import java.net.SocketException;

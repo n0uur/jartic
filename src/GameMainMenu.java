@@ -1,4 +1,4 @@
-import GameClient.LocalSave.LocalPlayerName;
+import GameClient.Model.LocalSave.LocalPlayerName;
 import Shared.Model.GamePacket.C2S_JoinGame;
 import Shared.Model.GameConfig;
 
