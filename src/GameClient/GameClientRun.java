@@ -176,7 +176,7 @@ public class GameClientRun extends javax.swing.JFrame implements MouseListener, 
         Graphics2D g2d = (Graphics2D) g;
         try {
             posXMouse = (int) this.canvas1.getMousePosition().getX();
-            posYMouse = (int) this.canvas1.getMousePosition().getY();
+            posYMouse = (int) this.canvas1.getMousePosition().getY() - 3;
             if(mouseBtn == 1) {
                 g2d.setPaint(Color.black);
                 g2d.fillOval(posXMouse, posYMouse, 5, 5);
