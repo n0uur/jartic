@@ -152,7 +152,7 @@ public class GameClientView extends javax.swing.JFrame {
                 g2d.setPaint(Color.white);
                 g2d.fillOval(mousePosX, mousePosY, 20, 20);
             }
-        }catch (NullPointerException e){}
+        } catch (NullPointerException ignored){}
     }
 
 }
