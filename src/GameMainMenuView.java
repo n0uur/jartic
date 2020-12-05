@@ -1,4 +1,4 @@
-import GameClient.Model.LocalSave.LocalPlayerName;
+import GameClient.Model.LocalPlayerData;
 import Shared.Logger.GameLog;
 
 import javax.swing.*;
@@ -30,8 +30,8 @@ public class GameMainMenuView {
         this.topPanel = new JPanel();
         this.nameLabel = new JLabel("Enter your name :");
 
-        if (LocalPlayerName.getPlayerName() != null) {
-            this.nameTextField = new JTextField(LocalPlayerName.getPlayerName());
+        if (LocalPlayerData.getPlayerName() != null) {
+            this.nameTextField = new JTextField(LocalPlayerData.getPlayerName());
         } else
             this.nameTextField = new JTextField();
 

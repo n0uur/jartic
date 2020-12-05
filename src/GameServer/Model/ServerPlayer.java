@@ -52,7 +52,10 @@ public class ServerPlayer {
         return null;
     }
 
-    public static ArrayList<ServerPlayer> getPlayers() {
+    public synchronized static ArrayList<ServerPlayer> getPlayers() {
+        if(players == null) {
+            players = new ArrayList<ServerPlayer>();
+        }
         return players;
     }
 
@@ -70,9 +73,9 @@ public class ServerPlayer {
 
     public ServerPlayer(String name) {
         this.playerToken = UUID.randomUUID().toString();
-        this.playerProfile = new PlayerProfile("name");
+        this.playerProfile = new PlayerProfile(name);
         this.peerId = _peerCount + 1;
-        this.setLastResponse(System.currentTimeMillis());
+        this.response();
         addPlayer(this);
     }
 
@@ -123,6 +126,10 @@ public class ServerPlayer {
 
     public void isRequestedHeartBeat(boolean requestedHeartBeat) {
         isRequestedHeartBeat = requestedHeartBeat;
+    }
+
+    public void response() {
+        this.setLastResponse(System.currentTimeMillis());
     }
 
     //////////////////////////////////////////////

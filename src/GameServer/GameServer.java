@@ -1,12 +1,12 @@
 package GameServer;
 
 import GameServer.Model.ServerPlayer;
-import Shared.Model.GamePacket.ClientPacket;
+import GameServer.Network.ServerNetworkListener;
+import GameClient.Model.ClientPacket;
 import Shared.Logger.ServerLog;
 import Shared.Model.GamePacket.S2C_ChatMessage;
 import Shared.Model.GamePacket.S2C_RequestHeartBeat;
 import Shared.Model.GameServerStatus;
-import com.sun.security.ntlm.Server;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,10 @@ public class GameServer {
 
     // server worker
 
-    private NetworkListener networkListener;
+    private ServerNetworkListener serverNetworkListener;
     private Thread networkListenerThread;
 
-    private PacketHandler packetHandler;
+    private ServerPacketHandler serverPacketHandler;
     private Thread packetHandlerThead;
 
     private ArrayList<ClientPacket> packets;
@@ -38,12 +38,12 @@ public class GameServer {
 
         ServerLog.Log("Creating Server worker & listener..");
 
-        this.networkListener = new NetworkListener(this);
-        this.networkListenerThread = new Thread(this.networkListener);
+        this.serverNetworkListener = new ServerNetworkListener(this);
+        this.networkListenerThread = new Thread(this.serverNetworkListener);
         this.networkListenerThread.start();
 
-        this.packetHandler = new PacketHandler(this);
-        this.packetHandlerThead = new Thread(this.packetHandler);
+        this.serverPacketHandler = new ServerPacketHandler(this);
+        this.packetHandlerThead = new Thread(this.serverPacketHandler);
         this.packetHandlerThead.start();
 
         ServerLog.Log("Creating game object..");
@@ -53,6 +53,8 @@ public class GameServer {
 
     public void update() {
         // todo : update game logic via time
+
+        long currentTime = System.currentTimeMillis();
 
         // check if player not enough then reset game to waiting status !
         if(ServerPlayer.getPlayers().size() < 2) {
@@ -64,34 +66,38 @@ public class GameServer {
         }
 
         // check player connection is still alive
-        ServerPlayer.getPlayers().forEach((player) -> {
+        synchronized (this) {
+            for(int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
 
-            if(player.getLastResponse() > 5000 && !player.isRequestedHeartBeat()) {
+                ServerPlayer player = ServerPlayer.getPlayers().get(i);
 
-                S2C_RequestHeartBeat requestPacket = new S2C_RequestHeartBeat();
-                requestPacket.sendToClient(player.getPeerId());
+                if(currentTime - player.getLastResponse() > 5000 && !player.isRequestedHeartBeat()) {
 
-                player.isRequestedHeartBeat(true);
+                    ServerLog.Log(player.getPlayerProfile().getName() + " has no responses in 5 seconds..");
+
+                    S2C_RequestHeartBeat requestPacket = new S2C_RequestHeartBeat();
+                    requestPacket.sendToClient(player.getPeerId());
+
+                    player.isRequestedHeartBeat(true);
+                }
+
+                if(currentTime - player.getLastResponse() > 10000 && player.isRequestedHeartBeat()) {
+
+                    player.remove();
+
+                    S2C_ChatMessage leftMessage = new S2C_ChatMessage();
+                    leftMessage.flag = S2C_ChatMessage.messageFlag.MESSAGE_DANGER;
+                    leftMessage.message = player.getPlayerProfile().getName() + " has lost his/her connection with our game :(";
+
+                    ServerLog.Log(player.getPlayerProfile().getName() + " has lost his/her connection.");
+
+                    leftMessage.broadcastToClient();
+
+                    this.broadcastGameDataUpdate();
+
+                }
             }
-
-            // todo :
-            //  [!] check if player last reponse > 10 seconds & already request for heartbeat
-            //  [!] then remove that player cause of he/her has lost connection...
-            //  [!] and send broadcast message that he/her has left..
-            if(player.getLastResponse() > 10000 && player.isRequestedHeartBeat()) {
-
-                player.remove();
-
-                S2C_ChatMessage leftMessage = new S2C_ChatMessage();
-                leftMessage.flag = S2C_ChatMessage.messageFlag.MESSAGE_DANGER;
-                leftMessage.message = player.getPlayerProfile().getName() + " has left.";
-
-                leftMessage.broadcastToClient();
-
-                this.broadcastGameDataUpdate();
-
-            }
-        });
+        }
 
         // broadcast game data update if it's too long
         if(this.lastBroadcastDataUpdate > 2000) {
@@ -106,8 +112,8 @@ public class GameServer {
     public void destroy() {
         ServerLog.Log("Server is shutting down..");
 
-        this.networkListener.destroy();
-        this.packetHandler.destroy();
+        this.serverNetworkListener.destroy();
+        this.serverPacketHandler.destroy();
 
         // todo : tell all player server is closing..
 
@@ -116,7 +122,12 @@ public class GameServer {
     }
 
     public synchronized void addNetworkIncomePacket(ClientPacket clientPacket) {
+        ServerLog.Log("Incoming packet ["+ clientPacket.PacketId +"]");
         this.packets.add(clientPacket);
+    }
+
+    public synchronized ClientPacket getQueuePacket() {
+        return this.packets.remove(0);
     }
 
     public ArrayList<ClientPacket> getPackets() {

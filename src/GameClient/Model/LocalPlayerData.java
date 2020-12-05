@@ -1,16 +1,47 @@
-package GameClient.Model.LocalSave;
+package GameClient.Model;
 
 import Shared.Logger.GameLog;
+import Shared.Model.PlayerProfile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class LocalPlayerName {
+public class LocalPlayerData {
     private static String playerName = null;
 
+    private static int id;
+
+    private static String token;
+
+    private static PlayerProfile playerProfile;
+
     private static final String saveFileName = "playerName.txt";
+
+    public static int getId() {
+        return id;
+    }
+
+    public static void setId(int id) {
+        LocalPlayerData.id = id;
+    }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String token) {
+        LocalPlayerData.token = token;
+    }
+
+    public static PlayerProfile getPlayerProfile() {
+        return playerProfile;
+    }
+
+    public static void setPlayerProfile(PlayerProfile playerProfile) {
+        LocalPlayerData.playerProfile = playerProfile;
+    }
 
     public static String getPlayerName() {
         if (playerName == null) {

@@ -1,7 +1,8 @@
-package Shared.Model.GamePacket;
+package GameServer.Model;
 
 import GameServer.Model.ServerPlayer;
-import GameServer.NetworkListener;
+import GameServer.Network.ServerNetworkListener;
+import Shared.Model.GamePacket.Packet;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public abstract class ServerPacket extends Packet {
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, playerIP, playerPort);
 
         try {
-            NetworkListener.getDatagramSocket().send(sendPacket);
+            ServerNetworkListener.getDatagramSocket().send(sendPacket);
         } catch (IOException e) {
             e.printStackTrace();
         }

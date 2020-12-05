@@ -20,6 +20,7 @@ public abstract class Packet {
         S2C_UpdatePlayers,
         S2C_UpdateProfile,
         S2C_UpdateWhiteBoard,
+        S2C_ServerClose,
     }
 
     public PacketID PacketId = PacketID.valueOf(this.getClass().getSimpleName());

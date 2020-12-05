@@ -1,7 +1,9 @@
-package Shared.Model.GamePacket;
+package GameClient.Model;
 
+import GameClient.Model.LocalPlayerData;
 import GameClient.Model.Network.NetworkSocket;
 import Shared.Model.GameConfig;
+import Shared.Model.GamePacket.Packet;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 
 public abstract class ClientPacket extends Packet {
-    public String playerToken;
+    public String playerToken = LocalPlayerData.getToken();
     public InetAddress playerIp;
     public int playerPort;
 

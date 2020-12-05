@@ -1,8 +1,7 @@
-package GameServer;
+package GameServer.Network;
 
-import Shared.Model.GamePacket.C2S_JoinGame;
-import Shared.Model.GamePacket.ClientPacket;
-import Shared.Logger.ServerLog;
+import GameServer.GameServer;
+import GameClient.Model.ClientPacket;
 import Shared.Model.GameConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,19 +12,19 @@ import java.lang.reflect.Type;
 import java.net.*;
 import java.util.Arrays;
 
-public class NetworkListener implements Runnable {
+public class ServerNetworkListener implements Runnable {
 
     private static DatagramSocket serverSocket;
 
     public static DatagramSocket getDatagramSocket() {
-        if(NetworkListener.serverSocket == null) {
+        if(ServerNetworkListener.serverSocket == null) {
             try {
-                NetworkListener.serverSocket = new DatagramSocket(GameConfig.SERVER_GAME_PORT);
+                ServerNetworkListener.serverSocket = new DatagramSocket(GameConfig.SERVER_GAME_PORT);
             } catch (SocketException e) {
                 e.printStackTrace();
             }
         }
-        return NetworkListener.serverSocket;
+        return ServerNetworkListener.serverSocket;
     }
 
     private GameServer gameServer;
@@ -34,7 +33,7 @@ public class NetworkListener implements Runnable {
 
     private boolean isDestroyed;
 
-    public NetworkListener(GameServer gameServer) {
+    public ServerNetworkListener(GameServer gameServer) {
         this.gameServer = gameServer;
     }
 
@@ -61,7 +60,7 @@ public class NetworkListener implements Runnable {
 
                 String jsonString = new String(receivePacket.getData()).trim(); // N0UR FIXED : BugID 193890182 : packet having invalid space after } !
 
-                System.out.println(jsonString);
+//                System.out.println(jsonString);
 
                 String packetName = JsonParser.parseString(jsonString).getAsJsonObject().get("PacketId").getAsString();
 

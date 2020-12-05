@@ -2,12 +2,14 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-//        new Game();
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SwingUtilities.invokeLater(Game::new);
+
+        Game game = new Game();
+        game.main_loop();
     }
 }

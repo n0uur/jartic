@@ -1,6 +1,6 @@
 package GameClient;
 
-import GameClient.Model.PlayerModel;
+import GameClient.Model.ClientPlayer;
 import GameClient.UI.FontManager;
 import GameClient.UI.PlayerComponent;
 
@@ -159,8 +159,9 @@ public class GameClientView extends javax.swing.JFrame {
     public void drawPlayers() {
         playerList = new JPanel();
         playerList.add(player);
-        for (int i = 0; i < PlayerModel.getPlayers().size(); i++) {
-            playerList.add(new PlayerComponent(PlayerModel.getPlayer(i).getName()).getPlayerPanel());
-        }
+
+        ClientPlayer.getPlayers().forEach((player) -> {
+            playerList.add(new PlayerComponent(player.getPlayerProfile().getName()).getPlayerPanel());
+        });
     }
 }

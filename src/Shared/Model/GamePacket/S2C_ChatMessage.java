@@ -1,5 +1,7 @@
 package Shared.Model.GamePacket;
 
+import GameServer.Model.ServerPacket;
+
 public class S2C_ChatMessage extends ServerPacket {
 
     public static enum messageFlag {
