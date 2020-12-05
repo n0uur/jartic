@@ -1,14 +1,12 @@
-package Shared.GamePacket;
+package Shared.Model.GamePacket;
 
 import GameClient.Network.NetworkSocket;
-import GameServer.Model.Player;
 import Shared.Model.GameConfig;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public abstract class ClientPacket extends Packet {
     public String playerToken;
@@ -35,4 +33,5 @@ public abstract class ClientPacket extends Packet {
             e.printStackTrace();
         }
     }
+
 }

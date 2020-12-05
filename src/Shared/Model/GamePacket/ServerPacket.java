@@ -1,4 +1,4 @@
-package Shared.GamePacket;
+package Shared.Model.GamePacket;
 
 import GameServer.Model.Player;
 import GameServer.NetworkListener;
@@ -9,7 +9,7 @@ import java.net.DatagramPacket;
 
 public abstract class ServerPacket extends Packet {
 
-    public void SendToClient(int peerId) {
+    public void sendToClient(int peerId) {
 
         Player targetPlayer = Player.getPlayer(peerId);
 
@@ -23,5 +23,13 @@ public abstract class ServerPacket extends Packet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void broadcastToClient() {
+
+        Player.getPlayers().forEach((player) -> {
+            sendToClient(player.getPeerId());
+        });
+
     }
 }

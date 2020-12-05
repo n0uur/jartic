@@ -1,4 +1,4 @@
-package Shared.GamePacket;
+package Shared.Model.GamePacket;
 
 import Shared.Model.GameServer;
 import Shared.Model.PlayerProfile;
