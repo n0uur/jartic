@@ -35,16 +35,16 @@ public class PacketHandler implements Runnable {
 
                     C2S_JoinGame gamePacket = (C2S_JoinGame) currentWork;
 
+                    ServerPlayer newServerPlayer = new ServerPlayer(gamePacket.playerName);
+
+                    newServerPlayer.setPlayerResponseAddress(gamePacket.playerIp, gamePacket.playerPort);
+
                     S2C_AcceptJoinGameRequest responsePacket = new S2C_AcceptJoinGameRequest();
 
                     if(ServerPlayer.getPlayers().size() >= GameConfig.MAX_PLAYER) {
                         responsePacket.isRoomFull = true;
                     }
                     else {
-                        ServerPlayer newServerPlayer = new ServerPlayer(gamePacket.playerName);
-
-                        newServerPlayer.setPlayerResponseAddress(gamePacket.playerIp, gamePacket.playerPort);
-
                         responsePacket.playerToken = newServerPlayer.getPlayerToken();
                         responsePacket.gameStatus = Shared.Model.GameServer.gameStatus.GAME_PLAYING;
                         responsePacket.playerProfile = newServerPlayer.getPlayerProfile();
