@@ -1,15 +1,15 @@
 import GameClient.LocalSave.LocalPlayerName;
-import Shared.GamePacket.C2S_JoinGame;
+import Shared.Model.GamePacket.C2S_JoinGame;
 import Shared.Model.GameConfig;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameMainMenuController implements ActionListener {
+public class GameMainMenu implements ActionListener {
 
     private GameMainMenuView gameMainMenuView;
 
-    public GameMainMenuController() {
+    public GameMainMenu() {
         this.gameMainMenuView = new GameMainMenuView(this);
     }
 

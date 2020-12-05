@@ -24,7 +24,7 @@ public class GameMainMenuView {
 
     private boolean isShowingJoinMenu;
 
-    public GameMainMenuView(GameMainMenuController gameMainMenuController) {
+    public GameMainMenuView(GameMainMenu gameMainMenu) {
         this.mainMenuFrame = new JFrame("Jartic - java gartic.io cloned!");
 
         this.topPanel = new JPanel();
@@ -42,9 +42,9 @@ public class GameMainMenuView {
 
         this.mainPanel = new JPanel();
         this.hostGameButton = new JButton("Host");
-        this.hostGameButton.addActionListener(gameMainMenuController);
+        this.hostGameButton.addActionListener(gameMainMenu);
         this.joinGameButton = new JButton("Join");
-        this.joinGameButton.addActionListener(gameMainMenuController);
+        this.joinGameButton.addActionListener(gameMainMenu);
 
         this.mainPanel.setLayout(new FlowLayout());
         this.mainPanel.add(this.hostGameButton);
@@ -66,9 +66,9 @@ public class GameMainMenuView {
         JPanel joinBottomPanel = new JPanel();
         joinBottomPanel.setLayout(new FlowLayout());
         this.backFromJoinButton = new JButton("Back");
-        this.backFromJoinButton.addActionListener(gameMainMenuController);
+        this.backFromJoinButton.addActionListener(gameMainMenu);
         this.connectButton = new JButton("Connect");
-        this.connectButton.addActionListener(gameMainMenuController);
+        this.connectButton.addActionListener(gameMainMenu);
 
         joinBottomPanel.add(backFromJoinButton);
         joinBottomPanel.add(connectButton);
