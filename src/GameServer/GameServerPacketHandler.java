@@ -41,7 +41,7 @@ public class GameServerPacketHandler implements Runnable {
 
                     S2C_AcceptJoinGameRequest responsePacket = new S2C_AcceptJoinGameRequest();
 
-                    if(ServerPlayer.getServerPlayers().size() >= GameConfig.MAX_PLAYER) {
+                    if(ServerPlayer.getPlayers().size() >= GameConfig.MAX_PLAYER) {
                         responsePacket.isRoomFull = true;
                     }
                     else {
