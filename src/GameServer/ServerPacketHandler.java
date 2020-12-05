@@ -68,7 +68,7 @@ public class ServerPacketHandler implements Runnable {
                                 // todo : if player is answer corrected answer; broadcast that message ;
                                 //  else check the answer. if correct ; that player is correct. else broadcast that message.
                             } else {
-                                ServerLog.Error("Player selecting word while server is not request!.");
+                                ServerLog.error("Player selecting word while server is not request!.");
                             }
                         } else if (currentWork.PacketId == Packet.PacketID.C2S_HeartBeat) {
                             C2S_HeartBeat gamePacket = (C2S_HeartBeat) currentWork;
@@ -86,7 +86,7 @@ public class ServerPacketHandler implements Runnable {
                             if (this.gameServer.getCurrentGameStatus() == GameServerStatus.gameStatus.GAME_WAITING_WORD) {
                                 this.gameServer.setCurrentGameStatus(GameServerStatus.gameStatus.GAME_PLAYING);
                             } else {
-                                ServerLog.Error("Player selecting word while server is not require!.");
+                                ServerLog.error("Player selecting word while server is not require!.");
                             }
                         } else if (currentWork.PacketId == Packet.PacketID.C2S_UpdateWhiteBoard) { // drawing player update his/her white board
                             C2S_UpdateWhiteBoard gamePacket = (C2S_UpdateWhiteBoard) currentWork;
@@ -95,10 +95,10 @@ public class ServerPacketHandler implements Runnable {
 
                         // more packet to add above
                         else {
-                            ServerLog.Error("Invalid packet from client!");
+                            ServerLog.error("Invalid packet from client!");
                         }
                     } else { // no this is not real player
-                        ServerLog.Error("Incorrect player income packet!");
+                        ServerLog.error("Incorrect player income packet!");
                     }
                 }
             }
