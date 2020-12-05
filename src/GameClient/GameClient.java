@@ -16,22 +16,6 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
         this.mouseBtn = mouseBtn;
     }
 
-    public int getPosXMouse() {
-        return posXMouse;
-    }
-
-    public void setPosXMouse(int posXMouse) {
-        this.posXMouse = posXMouse;
-    }
-
-    public int getPosYMouse() {
-        return posYMouse;
-    }
-
-    public void setPosYMouse(int posYMouse) {
-        this.posYMouse = posYMouse;
-    }
-
     private int[][] drawPoints = new int[900][400];
 
     public GameClient() {
@@ -57,7 +41,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void mousePressed(MouseEvent e) {
-        this.mouseBtn = e.getButton();
+        this.setMouseBtn(e.getButton());
     }
 
     @Override
@@ -78,15 +62,19 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     @Override
     public void mouseDragged(MouseEvent e) {
 
-        int mousePosX = this.getPosXMouse();
-        int mousePosY = this.getPosYMouse();
+        int mousePosX = e.getX();
+        int mousePosY = e.getY();
         int mouseBtn = this.getMouseBtn();
 
-        if(mouseBtn == 1) {
-            drawPoints[mousePosX][mousePosY] = 1;
+        if(this.getMouseBtn() == 1) {
+            try {
+                drawPoints[mousePosX][mousePosY] = 1;
+            }catch (ArrayIndexOutOfBoundsException Ignored){}
         }
-        else if(mouseBtn == 3) {
-            drawPoints[mousePosX][mousePosY] = 0;
+        else if(this.getMouseBtn() == 3) {
+            try {
+                drawPoints[mousePosX][mousePosY] = 0;
+            }catch (ArrayIndexOutOfBoundsException Ignored){}
         }
 
         this.gameClientView.doDrawing(mousePosX, mousePosY, mouseBtn);

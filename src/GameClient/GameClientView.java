@@ -146,7 +146,6 @@ public class GameClientView extends javax.swing.JFrame {
             if(mouseBtn == 1) {
                 g2d.setPaint(Color.black);
                 g2d.fillOval(mousePosX, mousePosY, 5, 5);
-
             }
             else if(mouseBtn == 3) {
                 g2d.setPaint(Color.white);
