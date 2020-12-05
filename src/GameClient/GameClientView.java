@@ -1,71 +1,142 @@
 package GameClient;
 
-import GameClient.UI.ChatBox;
-import GameClient.UI.DrawBoard;
-import com.raylib.Jaylib;
-import com.raylib.Raylib;
+import GameClient.UI.FontManager;
+import GameClient.UI.PlayerComponent;
 
-import static com.raylib.Jaylib.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyListener;
 
-public class GameClientView {
-    Rectangle allPlayerFrame;
-    DrawBoard drawBoard;
-    ChatBox chatBox;
-    Font font;
-    Jaylib.Vector2 currentDrawingPositionText, playerPositionText;
+public class GameClientView extends javax.swing.JFrame {
+    private java.awt.Canvas canvas1;
+    private javax.swing.JTextArea chatLogMsg;
+    private javax.swing.JTextField chatMsgInput;
+    private javax.swing.JLabel currentDrawing;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel player;
+    private javax.swing.JPanel playerList;
+    private GameClientController gameClientController;
 
-    public GameClientView(GameClientController g) {
-        InitWindow(1280, 720, "Jartic");
-        font = new Font(LoadFont("resource/FCIconic.ttf"));
+    public Canvas getCanvas1() {
+        return canvas1;
+    }
 
-        drawBoard = new DrawBoard();
+    public JTextField getChatMsgInput() {
+        return chatMsgInput;
+    }
 
-        chatBox = new ChatBox();
+    public JTextArea getChatLogMsg() {
+        return chatLogMsg;
+    }
 
-        chatBox.addInteractionListener(g);
+    public GameClientView(GameClientController gameClientController) {
+        this.gameClientController = gameClientController;
+        playerList = new javax.swing.JPanel();
+        player = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        canvas1 = new java.awt.Canvas();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        chatLogMsg = new javax.swing.JTextArea();
+        chatMsgInput = new javax.swing.JTextField();
+        currentDrawing = new javax.swing.JLabel();
 
-        allPlayerFrame = new Rectangle();
-        allPlayerFrame.width((int) (GetScreenWidth() * 0.25));
-        allPlayerFrame.height(GetScreenHeight() - 20);
-        allPlayerFrame.x(10);
-        allPlayerFrame.y(10);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Jartic");
+        setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(1280, 768));
+        setResizable(false);
 
-        currentDrawingPositionText = new Jaylib.Vector2();
-        currentDrawingPositionText.x((int) (GetScreenWidth() * 0.25) + 20);
-        currentDrawingPositionText.y(10);
+        playerList.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        playerList.setPreferredSize(new java.awt.Dimension(320, 60));
+        playerList.setLayout(new java.awt.GridLayout(12, 0));
 
-        playerPositionText = new Jaylib.Vector2();
-        playerPositionText.x(15 + ((int) (GetScreenWidth() * 0.25) - 10 - MeasureTextEx(font, "PLAYER",40, 1).x())/2);
-        playerPositionText.y(25);
+        player.setFont(FontManager.getFont().deriveFont(40f)); // NOI18N
+        player.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player.setText("PlayerComponent");
 
-        System.out.println("Draw");
+        playerList.add(player);
+        for (int i = 1; i < 12; i++)
+            playerList.add(new PlayerComponent("Tester " + i).getPlayerPanel());
 
-        while(!WindowShouldClose()) {
+        canvas1.setSize(900, 400);
+        canvas1.setBackground(new java.awt.Color(255, 255, 255));
 
-            BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawRectangleRoundedLines(allPlayerFrame, (float) 0.05, 0, 2, BLACK);
-            DrawTextEx(font, "Current Drawing : ", currentDrawingPositionText, 40, 1, BLACK);
+        this.jPanel2.add(this.canvas1);
+        canvas1.addMouseListener(gameClientController);
+        canvas1.addMouseMotionListener(gameClientController);
+
+        chatLogMsg.setEditable(false);
+        chatLogMsg.setColumns(35);
+        chatLogMsg.setRows(5);
+        chatLogMsg.setLineWrap(true);
 
 
-            //player
-            DrawRectangleLines(15, 15, (int) (GetScreenWidth() * 0.25) - 10, 67, BLACK);
-            DrawTextEx(font, "PLAYER", playerPositionText, 40, 1, BLACK);
+        chatLogMsg.setFont(FontManager.getFont());
+        jScrollPane1.setViewportView(chatLogMsg);
 
-            drawBoard.drawGraphic();
+        chatMsgInput.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+        chatMsgInput.setFont(FontManager.getFont());
+        chatMsgInput.addKeyListener(gameClientController);
 
-            //player frame
-//            for (int i = 0; i<9;i++)
-//                DrawRectangleLines(15, 84 + (69*i), (int) (GetScreenWidth() * 0.25) - 10, 67, BLACK);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 917, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(chatMsgInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 917, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(chatMsgInput, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(19, Short.MAX_VALUE))
+        );
 
-            chatBox.drawGraphic();
-            chatBox.drawText("test\nsdfsdfsdfs\nasadasdas\nasdasda\nasdasd");
-            chatBox.drawTextField();
-//            chatBox.mouseClickedOnTextField();
-            EndDrawing();
-        }
+        currentDrawing.setFont(FontManager.getFont().deriveFont(36f)); // NOI18N
+        currentDrawing.setText("Current Drawing : ");
 
-        Raylib.CloseWindow();
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(playerList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(23, 23, 23)
+                                                .addComponent(currentDrawing, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(currentDrawing, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(playerList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+
+        pack();
+        setVisible(true);
     }
 
 }
