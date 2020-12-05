@@ -138,4 +138,21 @@ public class GameClientView extends javax.swing.JFrame {
         setVisible(true);
     }
 
+    public void doDrawing(int mousePosX, int mousePosY, int mouseBtn) {
+        Graphics2D g2d = (Graphics2D) this.getCanvas1().getGraphics();
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        try {
+            if(mouseBtn == 1) {
+                g2d.setPaint(Color.black);
+                g2d.fillOval(mousePosX, mousePosY, 5, 5);
+
+            }
+            else if(mouseBtn == 3) {
+                g2d.setPaint(Color.white);
+                g2d.fillOval(mousePosX, mousePosY, 20, 20);
+            }
+        }catch (NullPointerException e){}
+    }
+
 }

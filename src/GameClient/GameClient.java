@@ -7,29 +7,37 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     private boolean isClicked = false;
     private GameClientView gameClientView;
     private int mouseBtn, posXMouse, posYMouse;
+
+    public int getMouseBtn() {
+        return mouseBtn;
+    }
+
+    public void setMouseBtn(int mouseBtn) {
+        this.mouseBtn = mouseBtn;
+    }
+
+    public int getPosXMouse() {
+        return posXMouse;
+    }
+
+    public void setPosXMouse(int posXMouse) {
+        this.posXMouse = posXMouse;
+    }
+
+    public int getPosYMouse() {
+        return posYMouse;
+    }
+
+    public void setPosYMouse(int posYMouse) {
+        this.posYMouse = posYMouse;
+    }
+
     private int[][] drawPoints = new int[900][400];
 
     public GameClient() {
         this.gameClientView = new GameClientView(this);
     }
-    public void doDrawing(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        try {
-            posXMouse = (int) this.gameClientView.getCanvas1().getMousePosition().getX();
-            posYMouse = (int) this.gameClientView.getCanvas1().getMousePosition().getY();
-            if(mouseBtn == 1) {
-                g2d.setPaint(Color.black);
-                g2d.fillOval(posXMouse, posYMouse, 5, 5);
-                drawPoints[posXMouse][posYMouse] = 1;
-            }
-            else if(mouseBtn == 3) {
-                g2d.setPaint(Color.white);
-                g2d.fillOval(posXMouse, posYMouse, 20, 20);
-                drawPoints[posXMouse][posYMouse] = 0;
-            }
-        }catch (NullPointerException e){}
-    }
+
     public void chatMsgInputKeyPressed(java.awt.event.KeyEvent evt) {
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
             sendChatText();
@@ -69,7 +77,19 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        doDrawing(this.gameClientView.getCanvas1().getGraphics());
+
+        int mousePosX = this.getPosXMouse();
+        int mousePosY = this.getPosYMouse();
+        int mouseBtn = this.getMouseBtn();
+
+        if(mouseBtn == 1) {
+            drawPoints[mousePosX][mousePosY] = 1;
+        }
+        else if(mouseBtn == 3) {
+            drawPoints[mousePosX][mousePosY] = 0;
+        }
+
+        this.gameClientView.doDrawing(mousePosX, mousePosY, mouseBtn);
     }
 
     @Override
