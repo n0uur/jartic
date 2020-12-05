@@ -6,14 +6,6 @@ public class PlayerProfile {
     private int score;
     private int id;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public PlayerProfile() {
         this("");
     }
@@ -45,5 +37,23 @@ public class PlayerProfile {
 
     public void resetScore() {
         this.score = 0;
+    }
+
+    public boolean isCorrected() {
+        return isCorrected;
+    }
+
+    public void setCorrected(boolean corrected) {
+        isCorrected = corrected;
+    }
+
+    private boolean isCorrected;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
