@@ -5,7 +5,6 @@ import GameClient.UI.PlayerComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
 
 public class GameClientView extends javax.swing.JFrame {
     private java.awt.Canvas canvas1;
@@ -17,7 +16,7 @@ public class GameClientView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel player;
     private javax.swing.JPanel playerList;
-    private GameClientController gameClientController;
+    private GameClient gameClient;
 
     public Canvas getCanvas1() {
         return canvas1;
@@ -31,8 +30,8 @@ public class GameClientView extends javax.swing.JFrame {
         return chatLogMsg;
     }
 
-    public GameClientView(GameClientController gameClientController) {
-        this.gameClientController = gameClientController;
+    public GameClientView(GameClient gameClient) {
+        this.gameClient = gameClient;
         playerList = new javax.swing.JPanel();
         player = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -65,8 +64,8 @@ public class GameClientView extends javax.swing.JFrame {
         canvas1.setBackground(new java.awt.Color(255, 255, 255));
 
         this.jPanel2.add(this.canvas1);
-        canvas1.addMouseListener(gameClientController);
-        canvas1.addMouseMotionListener(gameClientController);
+        canvas1.addMouseListener(gameClient);
+        canvas1.addMouseMotionListener(gameClient);
 
         chatLogMsg.setEditable(false);
         chatLogMsg.setColumns(35);
@@ -79,7 +78,7 @@ public class GameClientView extends javax.swing.JFrame {
 
         chatMsgInput.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         chatMsgInput.setFont(FontManager.getFont());
-        chatMsgInput.addKeyListener(gameClientController);
+        chatMsgInput.addKeyListener(gameClient);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

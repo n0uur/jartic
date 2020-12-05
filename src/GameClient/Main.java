@@ -9,6 +9,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        java.awt.EventQueue.invokeLater(() -> new GameClientController());
+        java.awt.EventQueue.invokeLater(() -> new GameClient());
     }
 }

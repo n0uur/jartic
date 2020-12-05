@@ -3,13 +3,13 @@ package GameClient;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameClientController implements MouseListener, MouseMotionListener, KeyListener{
+public class GameClient implements MouseListener, MouseMotionListener, KeyListener{
     private boolean isClicked = false;
     private GameClientView gameClientView;
     private int mouseBtn, posXMouse, posYMouse;
     private int[][] drawPoints = new int[900][400];
 
-    public GameClientController() {
+    public GameClient() {
         this.gameClientView = new GameClientView(this);
     }
     public void doDrawing(Graphics g) {
