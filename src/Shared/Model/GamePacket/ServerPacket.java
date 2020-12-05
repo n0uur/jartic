@@ -1,6 +1,6 @@
 package Shared.Model.GamePacket;
 
-import GameServer.Model.Player;
+import GameServer.Model.ServerPlayer;
 import GameServer.NetworkListener;
 import com.google.gson.Gson;
 
@@ -11,12 +11,12 @@ public abstract class ServerPacket extends Packet {
 
     public void sendToClient(int peerId) {
 
-        Player targetPlayer = Player.getPlayer(peerId);
+        ServerPlayer targetServerPlayer = ServerPlayer.getPlayer(peerId);
 
         Gson gson = new Gson();
         String sendString = gson.toJson(this);
         byte[] sendData = sendString.getBytes();
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, targetPlayer.getPlayerIp(), targetPlayer.getPlayerPort());
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, targetServerPlayer.getPlayerIp(), targetServerPlayer.getPlayerPort());
 
         try {
             NetworkListener.getDatagramSocket().send(sendPacket);
@@ -27,8 +27,8 @@ public abstract class ServerPacket extends Packet {
 
     public void broadcastToClient() {
 
-        Player.getPlayers().forEach((player) -> {
-            sendToClient(player.getPeerId());
+        ServerPlayer.getServerPlayers().forEach((serverPlayer) -> {
+            sendToClient(serverPlayer.getPeerId());
         });
 
     }

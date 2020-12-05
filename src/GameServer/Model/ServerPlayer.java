@@ -6,18 +6,18 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Player {
+public class ServerPlayer {
 
     //////////////////////////////////////////////
 
     private static int _peerCount;
-    private static ArrayList<Player> players;
+    private static ArrayList<ServerPlayer> players;
 
-    private static void addPlayer(Player player) {
+    private static void addPlayer(ServerPlayer serverPlayer) {
         if (players == null) {
-            players = new ArrayList<Player>();
+            players = new ArrayList<ServerPlayer>();
         }
-        players.add(player);
+        players.add(serverPlayer);
         _peerCount += 1;
     }
 
@@ -34,7 +34,7 @@ public class Player {
         players.remove(i);
     }
 
-    public static Player getPlayer(String token) {
+    public static ServerPlayer getPlayer(String token) {
         for(int i = 0; i < players.size(); i++) {
             if(players.get(i).getPlayerToken().equals(token)) {
                 return players.get(i);
@@ -43,7 +43,7 @@ public class Player {
         return null;
     }
 
-    public static Player getPlayer(int peerId) {
+    public static ServerPlayer getPlayer(int peerId) {
         for(int i = 0; i < players.size(); i++) {
             if(players.get(i).peerId == peerId) {
                 return players.get(i);
@@ -52,7 +52,7 @@ public class Player {
         return null;
     }
 
-    public static ArrayList<Player> getPlayers() {
+    public static ArrayList<ServerPlayer> getPlayers() {
         return players;
     }
 
@@ -65,14 +65,14 @@ public class Player {
     private InetAddress playerIp;
     private int playerPort;
 
-    public Player(String name) {
+    public ServerPlayer(String name) {
         this.playerToken = UUID.randomUUID().toString();
         this.playerProfile = new PlayerProfile("name");
         this.peerId = _peerCount + 1;
         addPlayer(this);
     }
 
-    public Player() {
+    public ServerPlayer() {
         this("");
     }
 

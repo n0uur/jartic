@@ -1,7 +1,6 @@
 package GameServer;
 
-import GameServer.Model.Player;
-import Shared.Logger.GameLog;
+import GameServer.Model.ServerPlayer;
 import Shared.Logger.ServerLog;
 import Shared.Model.GamePacket.C2S_JoinGame;
 import Shared.Model.GamePacket.ClientPacket;
@@ -36,27 +35,27 @@ public class GameServerPacketHandler implements Runnable {
 
                     C2S_JoinGame gamePacket = (C2S_JoinGame) currentWork;
 
-                    Player newPlayer = new Player(gamePacket.playerName);
+                    ServerPlayer newServerPlayer = new ServerPlayer(gamePacket.playerName);
 
-                    newPlayer.setPlayerResponseAddress(gamePacket.playerIp, gamePacket.playerPort);
+                    newServerPlayer.setPlayerResponseAddress(gamePacket.playerIp, gamePacket.playerPort);
 
                     S2C_AcceptJoinGameRequest responsePacket = new S2C_AcceptJoinGameRequest();
 
-                    if(Player.getPlayers().size() >= GameConfig.MAX_PLAYER) {
+                    if(ServerPlayer.getServerPlayers().size() >= GameConfig.MAX_PLAYER) {
                         responsePacket.isRoomFull = true;
                     }
                     else {
-                        responsePacket.playerToken = newPlayer.getPlayerToken();
+                        responsePacket.playerToken = newServerPlayer.getPlayerToken();
                         responsePacket.gameStatus = Shared.Model.GameServer.gameStatus.GAME_PLAYING;
-                        responsePacket.playerProfile = newPlayer.getPlayerProfile();
+                        responsePacket.playerProfile = newServerPlayer.getPlayerProfile();
                     }
 
-                    responsePacket.sendToClient(newPlayer.getPeerId());
+                    responsePacket.sendToClient(newServerPlayer.getPeerId());
                 }
                 else {
-                    Player packetPlayer = Player.getPlayer(currentWork.playerToken);
+                    ServerPlayer packetServerPlayer = ServerPlayer.getPlayer(currentWork.playerToken);
 
-                    if(packetPlayer != null) { // exists player
+                    if(packetServerPlayer != null) { // exists player
                         if(currentWork.PacketId == Packet.PacketID.C2S_ChatMessage) {
 
                         }
