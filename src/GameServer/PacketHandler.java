@@ -50,7 +50,7 @@ public class PacketHandler implements Runnable {
                         responsePacket.playerProfile = newServerPlayer.getPlayerProfile();
                     }
 
-                    responsePacket.sendToClient(newServerPlayer.getPeerId());
+                    responsePacket.sendToClient(gamePacket.playerIp, gamePacket.playerPort);
                 }
                 else {
                     ServerPlayer packetServerPlayer = ServerPlayer.getPlayer(currentWork.playerToken);
