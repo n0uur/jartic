@@ -1,5 +1,6 @@
 package GameClient;
 
+import GameClient.Model.PlayerModel;
 import GameClient.UI.FontManager;
 import GameClient.UI.PlayerComponent;
 
@@ -54,11 +55,12 @@ public class GameClientView extends javax.swing.JFrame {
 
         player.setFont(FontManager.getFont().deriveFont(40f)); // NOI18N
         player.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        player.setText("PlayerComponent");
+        player.setText("Players");
 
         playerList.add(player);
-        for (int i = 1; i < 12; i++)
-            playerList.add(new PlayerComponent("Tester " + i).getPlayerPanel());
+
+//        for (int i = 1; i < 12; i++)
+//            playerList.add(new PlayerComponent("Tester " + i).getPlayerPanel());
 
         canvas1.setSize(900, 400);
         canvas1.setBackground(new java.awt.Color(255, 255, 255));
@@ -154,4 +156,11 @@ public class GameClientView extends javax.swing.JFrame {
         } catch (NullPointerException ignored){}
     }
 
+    public void drawPlayers() {
+        playerList = new JPanel();
+        playerList.add(player);
+        for (int i = 0; i < PlayerModel.getPlayers().size(); i++) {
+            playerList.add(new PlayerComponent(PlayerModel.getPlayer(i).getName()).getPlayerPanel());
+        }
+    }
 }

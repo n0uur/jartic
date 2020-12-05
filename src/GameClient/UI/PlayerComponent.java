@@ -47,8 +47,8 @@ public class PlayerComponent {
 
     }
 
-    public JLabel getPlayerName() {
-        return playerName;
+    public void setPlayerName(String playerName) {
+        this.playerName.setText(playerName);
     }
 
     public JPanel getPlayerPanel() {
@@ -61,5 +61,6 @@ public class PlayerComponent {
 
     public void setPlayerScore(int playerScore) {
         this.playerScore = playerScore;
+        this.playerScoreLabel.setText("Score : " + playerScore);
     }
 }
