@@ -85,7 +85,7 @@ public class ServerPlayer {
     }
 
     public void remove() {
-        removePlayer(this.getPlayerToken());
+        players.remove(this);
     }
 
     public void setPlayerResponseAddress(InetAddress playerIp, int port) {
