@@ -26,7 +26,7 @@ public class PlayerModel {
 
     public static PlayerProfile getPlayer(int id) {
         for (int i = 0; i < playersProfile.size(); i++) {
-            if (i == playersProfile.get(i).getId()) {
+            if (id == playersProfile.get(i).getId()) {
                 return playersProfile.get(i);
             }
         }
