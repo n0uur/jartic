@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Player {
+public class PlayerComponent {
     private JPanel playerPanel, playerInfoPanel;
     private JLabel playerName, playerScoreLabel, playerImage;
     private ImageIcon playerIcon;
@@ -17,7 +17,7 @@ public class Player {
     private Border padding;
     private int playerScore;
 
-    public Player(String playerName) {
+    public PlayerComponent(String playerName) {
         this.playerPanel = new JPanel();
         this.playerInfoPanel = new JPanel();
         this.playerName = new JLabel(playerName);
@@ -45,6 +45,10 @@ public class Player {
 
         this.playerPanel.setPreferredSize(new Dimension (290, 70));
 
+    }
+
+    public JLabel getPlayerName() {
+        return playerName;
     }
 
     public JPanel getPlayerPanel() {
