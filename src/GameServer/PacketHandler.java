@@ -27,7 +27,10 @@ public class PacketHandler implements Runnable {
         while(!isDestroy) {
             ArrayList<ClientPacket> workQueue = gameServer.getPackets();
             if(workQueue.size() > 0) {
-                ClientPacket currentWork = workQueue.remove(0);
+                ClientPacket currentWork;
+                synchronized (this) {
+                    currentWork = workQueue.remove(0);
+                }
 
                 if(currentWork.PacketId == Packet.PacketID.C2S_JoinGame) { // no player token packet is just only Join Game Packet!
 
@@ -46,6 +49,8 @@ public class PacketHandler implements Runnable {
                         responsePacket.playerToken = newServerPlayer.getPlayerToken();
                         responsePacket.gameStatus = Shared.Model.GameServerStatus.gameStatus.GAME_PLAYING;
                         responsePacket.playerProfile = newServerPlayer.getPlayerProfile();
+
+                        // todo : broadcast chat message that player is join!, update game data
                     }
 
                     responsePacket.sendToClient(gamePacket.playerIp, gamePacket.playerPort);
@@ -54,11 +59,16 @@ public class PacketHandler implements Runnable {
                     ServerPlayer packetServerPlayer = ServerPlayer.getPlayer(currentWork.playerToken);
 
                     if(packetServerPlayer != null) { // exists player
+
+                        packetServerPlayer.isRequestedHeartBeat(false);
+                        packetServerPlayer.setLastResponse(System.currentTimeMillis());
+
                         if(currentWork.PacketId == Packet.PacketID.C2S_ChatMessage) {
                             C2S_ChatMessage gamePacket = (C2S_ChatMessage) currentWork;
 
                             if(this.gameServer.getCurrentGameStatus() == GameServerStatus.gameStatus.GAME_PLAYING) {
                                 // todo : if player is drawer == yes ; ignore.
+
                                 // todo : if player is answer corrected answer; broadcast that message ;
                                 //  else check the answer. if correct ; that player is correct. else broadcast that message.
                             }
@@ -81,7 +91,8 @@ public class PacketHandler implements Runnable {
                         else if(currentWork.PacketId == Packet.PacketID.C2S_SelectWord) { // drawing player selected word!
                             C2S_SelectWord gamePacket = (C2S_SelectWord) currentWork;
 
-                            // todo : check if player is drawer.
+                            // todo : another check if player is drawer. if not then ignore it.
+
                             if(this.gameServer.getCurrentGameStatus() == GameServerStatus.gameStatus.GAME_WAITING_WORD) {
                                 this.gameServer.setCurrentGameStatus(GameServerStatus.gameStatus.GAME_PLAYING);
                             }

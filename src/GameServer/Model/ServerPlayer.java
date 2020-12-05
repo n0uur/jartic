@@ -65,10 +65,14 @@ public class ServerPlayer {
     private InetAddress playerIp;
     private int playerPort;
 
+    private long lastResponse;
+    private boolean isRequestedHeartBeat;
+
     public ServerPlayer(String name) {
         this.playerToken = UUID.randomUUID().toString();
         this.playerProfile = new PlayerProfile("name");
         this.peerId = _peerCount + 1;
+        this.setLastResponse(System.currentTimeMillis());
         addPlayer(this);
     }
 
@@ -103,6 +107,22 @@ public class ServerPlayer {
 
     public int getPeerId() {
         return this.peerId;
+    }
+
+    public long getLastResponse() {
+        return lastResponse;
+    }
+
+    public void setLastResponse(long lastResponse) {
+        this.lastResponse = lastResponse;
+    }
+
+    public boolean isRequestedHeartBeat() {
+        return isRequestedHeartBeat;
+    }
+
+    public void isRequestedHeartBeat(boolean requestedHeartBeat) {
+        isRequestedHeartBeat = requestedHeartBeat;
     }
 
     //////////////////////////////////////////////
