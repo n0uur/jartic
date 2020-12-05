@@ -1,4 +1,4 @@
-import GameClient.LocalSave.LocalPlayerName;
+import GameClient.Model.LocalSave.LocalPlayerName;
 import Shared.Logger.GameLog;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
 package Shared.Model.GamePacket;
 
-import GameClient.Network.NetworkSocket;
+import GameClient.Model.Network.NetworkSocket;
 import Shared.Model.GameConfig;
 import com.google.gson.Gson;
 

@@ -1,4 +1,4 @@
-package GameClient.LocalSave;
+package GameClient.Model.LocalSave;
 
 import Shared.Logger.GameLog;
 
