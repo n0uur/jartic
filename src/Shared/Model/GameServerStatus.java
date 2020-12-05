@@ -1,6 +1,6 @@
 package Shared.Model;
 
-public class GameServer {
+public class GameServerStatus {
     public static enum gameStatus {
         GAME_WAITING, // รอผู้เล่นมา
         GAME_STARTING, // เกมกำลังเริ่ม

@@ -2,6 +2,7 @@ package GameServer;
 
 import Shared.Model.GamePacket.ClientPacket;
 import Shared.Logger.ServerLog;
+import Shared.Model.GameServerStatus;
 import com.sun.security.ntlm.Server;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class GameServer {
     // game object
 
     // private ArrayList<Player> players;
+    private GameServerStatus.gameStatus currentGameStatus;
 
     //
 
@@ -64,4 +66,13 @@ public class GameServer {
         return this.packets;
     }
 
+    public GameServerStatus.gameStatus getCurrentGameStatus() {
+        return currentGameStatus;
+    }
+
+    public void setCurrentGameStatus(GameServerStatus.gameStatus currentGameStatus) {
+        this.currentGameStatus = currentGameStatus;
+
+        // todo : broadcast player current game state, update game
+    }
 }
