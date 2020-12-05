@@ -1,16 +1,11 @@
 package GameServer;
 
-import GameServer.Model.Player;
-import Shared.GamePacket.ClientPacket;
-import Shared.GamePacket.Packet;
+import Shared.Model.GamePacket.ClientPacket;
 import Shared.Logger.ServerLog;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.sun.security.ntlm.Server;
 
 import java.util.ArrayList;
 
-public class GameServerController {
+public class GameServer {
 
     // server worker
 
@@ -28,7 +23,7 @@ public class GameServerController {
 
     //
 
-    public GameServerController() {
+    public GameServer() {
         ServerLog.Log("Initializing Server..");
 
         this.packets = new ArrayList<ClientPacket>();

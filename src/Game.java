@@ -1,4 +1,4 @@
-import GameServer.GameServerController;
+import GameServer.GameServer;
 
 public class Game {
     public static enum GameState {
@@ -8,7 +8,7 @@ public class Game {
     }
 
     public Game() {
-        new GameServerController();
-        new GameMainMenuController();
+        new GameServer();
+        new GameMainMenu();
     }
 }

@@ -1,18 +1,14 @@
 package GameServer;
 
-import Shared.GamePacket.C2S_JoinGame;
-import Shared.GamePacket.ClientPacket;
-import Shared.Logger.GameLog;
+import Shared.Model.GamePacket.C2S_JoinGame;
+import Shared.Model.GamePacket.ClientPacket;
 import Shared.Logger.ServerLog;
 import Shared.Model.GameConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.*;
 import java.util.Arrays;
@@ -32,14 +28,14 @@ public class NetworkListener implements Runnable {
         return NetworkListener.serverSocket;
     }
 
-    private GameServerController gameServerController;
+    private GameServer gameServer;
 
     private final Gson gson = new GsonBuilder().setLenient().create();
 
     private boolean isDestroyed;
 
-    public NetworkListener(GameServerController gameServerController) {
-        this.gameServerController = gameServerController;
+    public NetworkListener(GameServer gameServer) {
+        this.gameServer = gameServer;
     }
 
     public void destroy() {
@@ -69,17 +65,14 @@ public class NetworkListener implements Runnable {
 
                 String packetName = JsonParser.parseString(jsonString).getAsJsonObject().get("PacketId").getAsString();
 
-                Class<?> packetClass = Class.forName("Shared.GamePacket." + packetName);
+                Class<?> packetClass = Class.forName("Shared.Model.GamePacket." + packetName);
 
                 ClientPacket realPacket = gson.fromJson(jsonString, (Type) packetClass);
 
                 realPacket.playerIp = receivePacket.getAddress();
                 realPacket.playerPort = receivePacket.getPort();
 
-                ServerLog.Log("Packet from " + receivePacket.getAddress() + ":" + receivePacket.getPort() + " >> " + packetName);
-                ServerLog.Warn("TEST  > " + ((C2S_JoinGame) realPacket).playerName);
-
-                this.gameServerController.addNetworkIncomePacket(realPacket);
+                this.gameServer.addNetworkIncomePacket(realPacket);
 
             }
 

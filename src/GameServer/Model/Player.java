@@ -101,6 +101,10 @@ public class Player {
         return playerPort;
     }
 
+    public int getPeerId() {
+        return this.peerId;
+    }
+
     //////////////////////////////////////////////
 
 }
