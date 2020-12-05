@@ -2,6 +2,7 @@ package GameServer;
 
 import Shared.Model.GamePacket.ClientPacket;
 import Shared.Logger.ServerLog;
+import com.sun.security.ntlm.Server;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class GameServer {
     private NetworkListener networkListener;
     private Thread networkListenerThread;
 
-    private GameServerPacketHandler gameServerPacketHandler;
+    private PacketHandler packetHandler;
     private Thread gameServerPacketHandlerThead;
 
     private ArrayList<ClientPacket> packets;
@@ -34,11 +35,25 @@ public class GameServer {
         this.networkListenerThread = new Thread(this.networkListener);
         this.networkListenerThread.start();
 
-        this.gameServerPacketHandler = new GameServerPacketHandler(this);
+        this.packetHandler = new PacketHandler(this);
 
         ServerLog.Log("Creating game object..");
 
         ServerLog.Log("Server start successfully..");
+    }
+
+    public void update() {
+
+    }
+
+    public void destroy() {
+        ServerLog.Log("Server is shutting down..");
+
+        this.networkListener.destroy();
+        this.packetHandler.destroy();
+
+        ServerLog.Log("Bye!");
+
     }
 
     public void addNetworkIncomePacket(ClientPacket clientPacket) {

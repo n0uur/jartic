@@ -27,8 +27,8 @@ public abstract class ServerPacket extends Packet {
 
     public void broadcastToClient() {
 
-        ServerPlayer.getServerPlayers().forEach((serverPlayer) -> {
-            sendToClient(serverPlayer.getPeerId());
+        ServerPlayer.getPlayers().forEach((player) -> {
+            sendToClient(player.getPeerId());
         });
 
     }

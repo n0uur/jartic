@@ -10,13 +10,13 @@ import Shared.Model.GameConfig;
 
 import java.util.ArrayList;
 
-public class GameServerPacketHandler implements Runnable {
+public class PacketHandler implements Runnable {
 
     private GameServer gameServer;
 
     private boolean isDestroy;
 
-    public GameServerPacketHandler(GameServer gameServer) {
+    public PacketHandler(GameServer gameServer) {
         this.gameServer = gameServer;
     }
 

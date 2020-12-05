@@ -2,6 +2,9 @@ package GameServer;
 
 public class ServerMain {
     public static void main(String[] args) {
-        new GameServer();
+        GameServer gameServer = new GameServer();
+        while(true) {
+            gameServer.update();
+        }
     }
 }
