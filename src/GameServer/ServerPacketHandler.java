@@ -62,41 +62,45 @@ public class ServerPacketHandler implements Runnable {
                         if (currentWork.PacketId == Packet.PacketID.C2S_ChatMessage) {
                             C2S_ChatMessage gamePacket = (C2S_ChatMessage) currentWork;
 
-                            if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
-                                // todo : if player is drawer == yes ; ignore.
-                                if(!packetServerPlayer.getPlayerProfile().isDrawing()) {
-                                    if(packetServerPlayer.getPlayerProfile().isCorrected()) {
-                                        S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                        chatPacket.message = gamePacket.message;
-                                        chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
-                                        chatPacket.broadcastToClient();
-                                    }
-                                    else {
-                                        if(this.gameServer.getDrawingWord().equals(gamePacket.message)) {
+                            if(gamePacket.message.length() > 0) {
+                                if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
+                                    if(!packetServerPlayer.getPlayerProfile().isDrawing()) {
+                                        if(packetServerPlayer.getPlayerProfile().isCorrected()) {
                                             S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                            chatPacket.message = gamePacket.message +" is the correct answer!";
-                                            chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
-                                            chatPacket.broadcastToClient();
-
-                                            packetServerPlayer.getPlayerProfile().setCorrected(true);
-                                        }
-                                        else {
-                                            S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                            chatPacket.message = gamePacket.message;
+                                            chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "]" + gamePacket.message;
                                             chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
                                             chatPacket.broadcastToClient();
                                         }
+                                        else {
+                                            if(this.gameServer.getDrawingWord().equals(gamePacket.message)) {
+                                                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                                chatPacket.message = gamePacket.message +" is the correct answer!";
+                                                chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
+                                                chatPacket.sendToClient(packetServerPlayer.getPeerId());
+
+                                                packetServerPlayer.getPlayerProfile().setCorrected(true);
+
+                                                // todo : add score to player
+                                            }
+                                            else {
+                                                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                                chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "]" + gamePacket.message;
+                                                chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
+                                                chatPacket.broadcastToClient();
+                                            }
+                                        }
                                     }
+
+
+                                    //  else check the answer. if correct ; that player is correct. else broadcast that message.
+                                } else {
+                                    S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                    chatPacket.message = gamePacket.message;
+                                    chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
+                                    chatPacket.broadcastToClient();
                                 }
-
-
-                                //  else check the answer. if correct ; that player is correct. else broadcast that message.
-                            } else {
-                                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                chatPacket.message = gamePacket.message;
-                                chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
-                                chatPacket.broadcastToClient();
                             }
+
                         }
                         else if (currentWork.PacketId == Packet.PacketID.C2S_HeartBeat) {
                             C2S_HeartBeat gamePacket = (C2S_HeartBeat) currentWork;

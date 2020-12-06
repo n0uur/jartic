@@ -1,12 +1,10 @@
 package GameClient;
 
+import GameClient.Model.ClientPlayer;
 import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
-import Shared.Logger.GameLog;
-import Shared.Model.GamePacket.C2S_HeartBeat;
-import Shared.Model.GamePacket.Packet;
-import Shared.Model.GamePacket.S2C_AcceptJoinGameRequest;
 import GameServer.Model.ServerPacket;
+import Shared.Model.GamePacket.*;
 
 import javax.swing.*;
 import java.util.*;
@@ -53,6 +51,15 @@ public class ClientPacketHandler implements Runnable {
 
                         C2S_HeartBeat heartBeat = new C2S_HeartBeat();
                         heartBeat.sendToServer();
+
+                    }
+                    else if(currentWork.PacketId == Packet.PacketID.S2C_UpdateServerData) {
+
+                        S2C_UpdateServerData serverData = (S2C_UpdateServerData) currentWork;
+
+                        ClientPlayer.updatePlayers(serverData.playersProfile);
+
+                        // todo : set game state
 
                     }
                 }
