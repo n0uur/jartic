@@ -25,7 +25,7 @@ public class GameServer {
     // game object
 
     // private ArrayList<Player> players;
-    private GameServerStatus.gameStatus currentGameStatus;
+    private GameServerStatus currentGameStatus;
 
     private long lastBroadcastDataUpdate;
 
@@ -59,8 +59,8 @@ public class GameServer {
         // check if player not enough then reset game to waiting status !
         if(ServerPlayer.getPlayers().size() < 2) {
 
-            if(this.getCurrentGameStatus() != GameServerStatus.gameStatus.GAME_WAITING) {
-                this.setCurrentGameStatus(GameServerStatus.gameStatus.GAME_ENDED); // instant end game if player not enough.
+            if(this.getCurrentGameStatus() != GameServerStatus.GAME_WAITING) {
+                this.setCurrentGameStatus(GameServerStatus.GAME_ENDED); // instant end game if player not enough.
             }
 
         }
@@ -107,6 +107,10 @@ public class GameServer {
         // todo :
         //  game logic up to game state..
 
+        if(this.getCurrentGameStatus() == GameServerStatus.GAME_WAITING) {
+
+        }
+
     }
 
     public void destroy() {
@@ -134,11 +138,11 @@ public class GameServer {
         return this.packets;
     }
 
-    public GameServerStatus.gameStatus getCurrentGameStatus() {
+    public GameServerStatus getCurrentGameStatus() {
         return currentGameStatus;
     }
 
-    public void setCurrentGameStatus(GameServerStatus.gameStatus currentGameStatus) {
+    public void setCurrentGameStatus(GameServerStatus currentGameStatus) {
         this.currentGameStatus = currentGameStatus;
         this.broadcastGameDataUpdate();
     }

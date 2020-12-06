@@ -43,7 +43,7 @@ public class ServerPacketHandler implements Runnable {
                         newServerPlayer.setPlayerResponseAddress(gamePacket.playerIp, gamePacket.playerPort);
 
                         responsePacket.playerToken = newServerPlayer.getPlayerToken();
-                        responsePacket.gameStatus = Shared.Model.GameServerStatus.gameStatus.GAME_PLAYING;
+                        responsePacket.gameStatus = Shared.Model.GameServerStatus.GAME_PLAYING;
                         responsePacket.playerProfile = newServerPlayer.getPlayerProfile();
 
                         // todo : broadcast chat message that player is join!, update game data
@@ -62,7 +62,7 @@ public class ServerPacketHandler implements Runnable {
                         if (currentWork.PacketId == Packet.PacketID.C2S_ChatMessage) {
                             C2S_ChatMessage gamePacket = (C2S_ChatMessage) currentWork;
 
-                            if (this.gameServer.getCurrentGameStatus() == GameServerStatus.gameStatus.GAME_PLAYING) {
+                            if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
                                 // todo : if player is drawer == yes ; ignore.
 
                                 // todo : if player is answer corrected answer; broadcast that message ;
@@ -83,8 +83,8 @@ public class ServerPacketHandler implements Runnable {
 
                             // todo : another check if player is drawer. if not then ignore it.
 
-                            if (this.gameServer.getCurrentGameStatus() == GameServerStatus.gameStatus.GAME_WAITING_WORD) {
-                                this.gameServer.setCurrentGameStatus(GameServerStatus.gameStatus.GAME_PLAYING);
+                            if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
+                                this.gameServer.setCurrentGameStatus(GameServerStatus.GAME_PLAYING);
                             } else {
                                 ServerLog.error("Player selecting word while server is not require!.");
                             }

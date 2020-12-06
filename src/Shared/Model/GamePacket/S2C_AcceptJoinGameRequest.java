@@ -6,7 +6,7 @@ import Shared.Model.PlayerProfile;
 
 public class S2C_AcceptJoinGameRequest extends ServerPacket {
     public PlayerProfile playerProfile;
-    public GameServerStatus.gameStatus gameStatus;
+    public GameServerStatus gameStatus;
     public String playerToken;
     public boolean isRoomFull;
 

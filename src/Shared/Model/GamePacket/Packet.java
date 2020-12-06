@@ -6,9 +6,9 @@ public abstract class Packet {
         C2S_ChatMessage,
         C2S_HeartBeat,
         C2S_JoinGame,
-        C2S_RequestUpdatePlayers,
-        C2S_RequestUpdateProfile,
-        C2S_RequestUpdateWhiteBoard,
+        C2S_RequestUpdatePlayers, // not using, server will auto sent an updates.
+        C2S_RequestUpdateProfile, // not using, server will auto sent an updates.
+        C2S_RequestUpdateWhiteBoard, // not using, server will auto sent an updates.
         C2S_SelectWord,
         C2S_UpdateWhiteBoard,
 
@@ -17,8 +17,9 @@ public abstract class Packet {
         S2C_RequestHeartBeat,
         S2C_RequestWord,
         S2C_ServerHeartBeat,
-        S2C_UpdatePlayers,
-        S2C_UpdateProfile,
+        S2C_UpdateServerData,
+        S2C_UpdatePlayers, // not using, we will use update server data instead
+        S2C_UpdateProfile, // not using, we will use update server data instead
         S2C_UpdateWhiteBoard,
         S2C_ServerClose,
     }
