@@ -68,6 +68,12 @@ public class ClientPacketHandler implements Runnable {
                         view.getChatLogMsg().setText(view.getChatLogMsg().getText() + chatPacket.message + '\n');
                         view.scrollToBottom();
                     }
+                    else if(currentWork.PacketId == Packet.PacketID.S2C_RequestWord) {
+                        S2C_RequestWord wordPacket = (S2C_RequestWord) currentWork;
+
+                        // todo : show select word dialog and send back to server using C2S_SelectWord
+                        //  wordPacket.words
+                    }
                 }
             }
             else {
