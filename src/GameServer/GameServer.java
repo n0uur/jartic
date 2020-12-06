@@ -70,7 +70,6 @@ public class GameServer {
     }
 
     public void update() {
-        // todo : update game logic via time
 
         long currentTime = System.currentTimeMillis();
 
@@ -132,12 +131,12 @@ public class GameServer {
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_STARTING) {
-            // todo : do initialize things
+
             this.setCurrentGameStatus(GameServerStatus.GAME_STARTING_ROUND);
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_STARTING_ROUND) {
-            // todo : clear array and random player into array
+
 
             this.playerDrawingQueue = new ArrayList<>(ServerPlayer.getPlayers());
             Collections.shuffle(this.playerDrawingQueue, new Random());
@@ -157,12 +156,12 @@ public class GameServer {
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
-            // todo : check if timed out
+
             if(currentTime - this.startPlayingTime > 30000) { // more than 30 seconds stop it!
                 this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
             }
 
-            // todo : check if all player have answered correct answer
+
             boolean allCorrected = true;
             for(int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
                 if(!ServerPlayer.getPlayers().get(i).getPlayerProfile().isCorrected()) {
@@ -214,7 +213,6 @@ public class GameServer {
             {
                 // todo : broadcast who is the winner..
 
-                // todo : clear all player score
                 for (int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
                     ServerPlayer.getPlayers().get(i).getPlayerProfile().setScore(0);
                 }
@@ -224,7 +222,6 @@ public class GameServer {
             }
 
             else if(isGameEndedBroadcastScore && currentTime - gameEndedBroadcastScoreTime > 10000) {
-                // todo : interval for 10 seconds before start new game
 
                 isGameEndedBroadcastScore = false;
 
