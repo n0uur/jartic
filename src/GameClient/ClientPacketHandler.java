@@ -33,6 +33,8 @@ public class ClientPacketHandler implements Runnable {
                 synchronized (this) {
                     ServerPacket currentWork =  workQueue.remove(0);
 
+                    this.gameClient.serverResponse();
+
 //                    GameLog.Log("Hay! I got some job! [" + currentWork.PacketId + "]");
 
                     if(currentWork.PacketId == Packet.PacketID.S2C_AcceptJoinGameRequest) {
