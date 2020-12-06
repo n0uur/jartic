@@ -64,11 +64,38 @@ public class ServerPacketHandler implements Runnable {
 
                             if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
                                 // todo : if player is drawer == yes ; ignore.
+                                if(!packetServerPlayer.getPlayerProfile().isDrawing()) {
+                                    if(packetServerPlayer.getPlayerProfile().isCorrected()) {
+                                        S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                        chatPacket.message = gamePacket.message;
+                                        chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
+                                        chatPacket.broadcastToClient();
+                                    }
+                                    else {
+                                        if(this.gameServer.getDrawingWord().equals(gamePacket.message)) {
+                                            S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                            chatPacket.message = gamePacket.message +" is the correct answer!";
+                                            chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
+                                            chatPacket.broadcastToClient();
 
-                                // todo : if player is answer corrected answer; broadcast that message ;
+                                            packetServerPlayer.getPlayerProfile().setCorrected(true);
+                                        }
+                                        else {
+                                            S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                            chatPacket.message = gamePacket.message;
+                                            chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
+                                            chatPacket.broadcastToClient();
+                                        }
+                                    }
+                                }
+
+
                                 //  else check the answer. if correct ; that player is correct. else broadcast that message.
                             } else {
-                                ServerLog.error("Player selecting word while server is not request!.");
+                                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                chatPacket.message = gamePacket.message;
+                                chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
+                                chatPacket.broadcastToClient();
                             }
                         }
                         else if (currentWork.PacketId == Packet.PacketID.C2S_HeartBeat) {
