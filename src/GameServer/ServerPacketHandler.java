@@ -83,7 +83,8 @@ public class ServerPacketHandler implements Runnable {
 
                                                 packetServerPlayer.getPlayerProfile().setCorrected(true);
 
-                                                // todo : add score to player
+                                                packetServerPlayer.getPlayerProfile().setScore(packetServerPlayer.getPlayerProfile().getScore() + this.gameServer.getAnswerScore());
+                                                this.gameServer.setAnswerScore(this.gameServer.getAnswerScore() - 1);
                                             }
                                             else {
                                                 S2C_ChatMessage chatPacket = new S2C_ChatMessage();

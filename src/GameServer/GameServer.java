@@ -47,6 +47,8 @@ public class GameServer {
     private boolean isStartWaitingWord;
     private long startWaitingWordTime;
 
+    private int answerScore;
+
     //
 
     public GameServer() {
@@ -204,6 +206,8 @@ public class GameServer {
 
                 ServerLog.log("requested words.");
 
+                setAnswerScore(10);
+
                 this.setCurrentGameStatus(GameServerStatus.GAME_WAITING_WORD);
             }
             else if(this.playerDrawingQueue.size() <= 0) {
@@ -238,7 +242,7 @@ public class GameServer {
                 // todo : broadcast who is the winner..
 
                 for (int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
-                    ServerPlayer.getPlayers().get(i).getPlayerProfile().setScore(0);
+                    ServerPlayer.getPlayers().get(i).getPlayerProfile().resetScore();
                 }
 
                 isGameEndedBroadcastScore = true;
@@ -268,6 +272,14 @@ public class GameServer {
 
         ServerLog.log("Bye!");
 
+    }
+
+    public int getAnswerScore() {
+        return answerScore;
+    }
+
+    public void setAnswerScore(int answerScore) {
+        this.answerScore = answerScore;
     }
 
     public boolean isStartWaitingWord() {
