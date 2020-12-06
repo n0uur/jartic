@@ -14,11 +14,14 @@ public class WordList {
     private static ArrayList<String> wordList;
 
     public static ArrayList<String> getWordList() {
+        if (wordList == null) {
+            loadWordList();
+        }
         return wordList;
     }
 
     public static String[] getRandomWord(int size) {
-        ArrayList<String> shuffleList = new ArrayList<>(wordList);
+        ArrayList<String> shuffleList = new ArrayList<>(getWordList());
         Collections.shuffle(shuffleList);
 
         String[] randomWord = new String[size];

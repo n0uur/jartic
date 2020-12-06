@@ -1,11 +1,13 @@
 package GameServer;
 
 import GameServer.Model.ServerPlayer;
+import GameServer.Model.WordList;
 import GameServer.Network.ServerNetworkListener;
 import GameClient.Model.ClientPacket;
 import Shared.Logger.ServerLog;
 import Shared.Model.GamePacket.S2C_ChatMessage;
 import Shared.Model.GamePacket.S2C_RequestHeartBeat;
+import Shared.Model.GamePacket.S2C_RequestWord;
 import Shared.Model.GameServerStatus;
 
 import java.util.ArrayList;
@@ -37,6 +39,9 @@ public class GameServer {
 
     private long startPlayingTime;
 
+    private boolean isGameEndedBroadcastScore;
+    private long gameEndedBroadcastScoreTime;
+
     //
 
     public GameServer() {
@@ -55,6 +60,8 @@ public class GameServer {
         this.packetHandlerThead.start();
 
         ServerLog.Log("Creating game object..");
+
+        WordList.loadWordList();
 
         ServerLog.Log("Server start successfully..");
     }
@@ -155,6 +162,62 @@ public class GameServer {
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_NEXT_PLAYER) {
+            if(this.playerDrawingQueue.get(0) != null) { // still have other in queue
+                this.drawingPlayer = this.playerDrawingQueue.remove(0);
+
+                S2C_RequestWord requestWord = new S2C_RequestWord();
+                requestWord.words = WordList.getRandomWord(3);
+                requestWord.sendToClient(this.drawingPlayer.getPeerId());
+            }
+            else {
+                this.setCurrentGameStatus(GameServerStatus.GAME_ENDED_ROUND);
+            }
+        }
+
+        else if(this.getCurrentGameStatus() == GameServerStatus.GAME_ENDED_ROUND) {
+
+            ServerPlayer maxScorePlayer = ServerPlayer.getPlayers().get(0);
+
+            for(int i = 1; i < ServerPlayer.getPlayers().size(); i++) {
+                if(ServerPlayer.getPlayers().get(i).getPlayerProfile().getScore() > maxScorePlayer.getPlayerProfile().getScore()) {
+                    maxScorePlayer = ServerPlayer.getPlayers().get(i);
+                    break;
+                }
+            }
+
+            if(maxScorePlayer.getPlayerProfile().getScore() >= 120) {
+                this.setCurrentGameStatus(GameServerStatus.GAME_ENDED);
+            }
+            else {
+                this.setCurrentGameStatus(GameServerStatus.GAME_STARTING_ROUND);
+            }
+
+        }
+
+        else if(this.getCurrentGameStatus() == GameServerStatus.GAME_ENDED) {
+
+            if (!isGameEndedBroadcastScore)
+            {
+                // todo : broadcast who is the winner..
+
+                // todo : clear all player score
+                for (int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
+                    ServerPlayer.getPlayers().get(i).getPlayerProfile().setScore(0);
+                }
+
+                isGameEndedBroadcastScore = true;
+                gameEndedBroadcastScoreTime = System.currentTimeMillis();
+            }
+
+            else if(isGameEndedBroadcastScore && currentTime - gameEndedBroadcastScoreTime > 10000) {
+                // todo : interval for 10 seconds before start new game
+
+                isGameEndedBroadcastScore = false;
+
+                this.setCurrentGameStatus(GameServerStatus.GAME_STARTING);
+
+            }
+
 
         }
 
