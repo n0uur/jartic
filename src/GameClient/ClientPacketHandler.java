@@ -72,6 +72,7 @@ public class ClientPacketHandler implements Runnable {
 
                         gameClient.setHintWord(serverData.hintWord);
                         gameClient.setRealWord(serverData.realWord);
+                        gameClient.setTimer(serverData.timeLeftInSeconds);
 
                         gameClient.isDrawer(serverData.drawerId == LocalPlayerData.getId());
 

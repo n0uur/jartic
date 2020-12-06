@@ -338,13 +338,13 @@ public class GameServer {
         long currentTime = System.currentTimeMillis();
 
         if(getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
-            timeLeft = (int) ((currentTime - this.startWaitingWordTime) / 1000);
+            timeLeft = (int) ((this.startWaitingWordTime + 10000 - currentTime) / 1000);
         }
         else if(getCurrentGameStatus() == GameServerStatus.GAME_ENDED) {
-            timeLeft = (int) ((currentTime - this.gameEndedBroadcastScoreTime) / 1000);
+            timeLeft = (int) ((this.gameEndedBroadcastScoreTime + 10000 - currentTime) / 1000);
         }
         else if(getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
-            timeLeft = (int) ((currentTime - this.startPlayingTime) / 1000);
+            timeLeft = (int) ((this.startPlayingTime + 30000 - currentTime) / 1000);
         }
         else if(getCurrentGameStatus() == GameServerStatus.GAME_STARTING) {
             // todo : add interval for starting game and calculate time left...

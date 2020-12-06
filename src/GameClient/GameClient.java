@@ -39,6 +39,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     private boolean isDrawer;
     private String realWord;
     private String hintWord;
+    private int timer;
 
     private SelectWord selectWord;
 
@@ -101,19 +102,19 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
             this.getGameClientView().getCurrentDrawing().setText("Waiting for more players..");
         }
         else if(this.getGameServerState() == GameServerStatus.GAME_WAITING_WORD) {
-            this.getGameClientView().getCurrentDrawing().setText("Waiting drawer to selecting word.");
+            this.getGameClientView().getCurrentDrawing().setText("Waiting drawer to selecting word... " + this.getTimer());
         }
         else if(this.getGameServerState() == GameServerStatus.GAME_PLAYING) {
             if(isDrawer)
-                this.getGameClientView().getCurrentDrawing().setText("Word is : " + this.getRealWord());
+                this.getGameClientView().getCurrentDrawing().setText("Word is : " + this.getRealWord() + "   ("+ this.getTimer() +" seconds left)");
             else
-                this.getGameClientView().getCurrentDrawing().setText("Hint : " + this.getHintWord());
+                this.getGameClientView().getCurrentDrawing().setText("Hint : " + this.getHintWord() + "   ("+ this.getTimer() +" seconds left)");
         }
         else if(this.getGameServerState() == GameServerStatus.GAME_NEXT_PLAYER) {
             this.getGameClientView().getCurrentDrawing().setText("Selecting next player");
         }
         else if(this.getGameServerState() == GameServerStatus.GAME_ENDED_ROUND) {
-            this.getGameClientView().getCurrentDrawing().setText("Round ended!");
+            this.getGameClientView().getCurrentDrawing().setText("Round ended! ...starting in "+ this.getTimer() +" seconds.");
         }
     }
 
@@ -287,5 +288,13 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     public void newSelectWord(String word1, String word2) {
         selectWord = new SelectWord( this ,word1, word2);
+    }
+
+    public int getTimer() {
+        return timer;
+    }
+
+    public void setTimer(int timer) {
+        this.timer = timer;
     }
 }
