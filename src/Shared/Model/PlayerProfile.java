@@ -5,6 +5,7 @@ public class PlayerProfile {
     private String name;
     private int score;
     private int id;
+    private boolean isDrawing;
 
     public PlayerProfile() {
         this("");
@@ -55,5 +56,13 @@ public class PlayerProfile {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isDrawing() {
+        return this.isDrawing;
+    }
+
+    public void isDrawing(boolean isDrawing) {
+        this.isDrawing = isDrawing;
     }
 }

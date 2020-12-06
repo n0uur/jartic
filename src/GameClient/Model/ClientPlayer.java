@@ -3,6 +3,7 @@ package GameClient.Model;
 import Shared.Model.PlayerProfile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ClientPlayer {
     public static ArrayList<ClientPlayer> players;
@@ -13,11 +14,47 @@ public class ClientPlayer {
 
     public static ClientPlayer getPlayer(int id) {
         for (int i = 0; i < players.size(); i++) {
-            if (id == players.get(i).getPlayerProfile().getId()) {
-                return players.get(i);
+            ClientPlayer player = players.get(i);
+            if (player.getPlayerProfile().getId() == id) {
+                return player;
             }
         }
         return null;
+    }
+
+    public synchronized static void addPlayer(ClientPlayer player) {
+        players.add(player);
+    }
+
+    public synchronized static void updatePlayers(ArrayList<PlayerProfile> newPlayers) {
+
+        for(int i = 0; i < newPlayers.size(); i++) {
+            PlayerProfile newPlayer = newPlayers.get(i);
+
+            ClientPlayer localPlayer = ClientPlayer.getPlayer(newPlayer.getId());
+            if(localPlayer != null) { // have any player in local array
+                localPlayer.playerProfile.setScore(newPlayer.getScore());
+                localPlayer.playerProfile.isDrawing(newPlayer.isDrawing());
+            }
+            else { // new player appeared!
+                new ClientPlayer(newPlayer);
+            }
+        }
+
+        // check for player that removed from server..
+        Iterator<ClientPlayer> playersIterator = players.iterator();
+
+        while (playersIterator.hasNext()) {
+            ClientPlayer player = playersIterator.next();
+
+            for(int j = 0; j < newPlayers.size(); j++) {
+                if(player.getPlayerProfile().getId() == newPlayers.get(j).getId()) {
+                    break;
+                }
+                // player not found maybe his/her disconnected, just remove..
+                playersIterator.remove();
+            }
+        }
     }
 
     ////////////////////////////////////////
@@ -26,6 +63,7 @@ public class ClientPlayer {
 
     public ClientPlayer(PlayerProfile profile) {
         this.setPlayerProfile(profile);
+        ClientPlayer.addPlayer(this);
     }
 
     public boolean isLocalPlayer() {
