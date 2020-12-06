@@ -75,6 +75,7 @@ public class ServerPlayer {
         this.playerToken = UUID.randomUUID().toString();
         this.playerProfile = new PlayerProfile(name);
         this.peerId = _peerCount + 1;
+        this.playerProfile.setId(this.peerId);
         this.response();
         addPlayer(this);
     }

@@ -36,9 +36,15 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     private GameServerStatus gameServerState;
 
+    private boolean isDrawer;
+    private String realWord;
+    private String hintWord;
+
     private SelectWord selectWord;
 
     public GameClient() {
+
+        this.gameClientView = new GameClientView(this);
 
         this.clientNetworkListener = new ClientNetworkListener(this);
         this.clientPacketHandlerThread = new Thread(this.clientNetworkListener);
@@ -70,7 +76,9 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
             }
         }
 
-        this.gameClientView = new GameClientView(this);
+        this.realWord = "";
+        this.hintWord = "";
+
         this.drawPoints = new int[900][400];
     }
 
@@ -88,6 +96,25 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
         }
 
         // todo : game logic by game state
+
+        if(this.getGameServerState() == GameServerStatus.GAME_WAITING) {
+            this.getGameClientView().getCurrentDrawing().setText("Waiting for more players..");
+        }
+        else if(this.getGameServerState() == GameServerStatus.GAME_WAITING_WORD) {
+            this.getGameClientView().getCurrentDrawing().setText("Waiting drawer to selecting word.");
+        }
+        else if(this.getGameServerState() == GameServerStatus.GAME_PLAYING) {
+            if(isDrawer)
+                this.getGameClientView().getCurrentDrawing().setText("Word is : " + this.getRealWord());
+            else
+                this.getGameClientView().getCurrentDrawing().setText("Hint : " + this.getHintWord());
+        }
+        else if(this.getGameServerState() == GameServerStatus.GAME_NEXT_PLAYER) {
+            this.getGameClientView().getCurrentDrawing().setText("Selecting next player");
+        }
+        else if(this.getGameServerState() == GameServerStatus.GAME_ENDED_ROUND) {
+            this.getGameClientView().getCurrentDrawing().setText("Round ended!");
+        }
     }
 
     public GameClientStatus getGameStatus() {
@@ -140,6 +167,38 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     public void serverResponse() {
         this.lastServerResponse = System.currentTimeMillis();
+    }
+
+    public boolean isDrawer() {
+        return isDrawer;
+    }
+
+    public void isDrawer(boolean drawing) {
+        isDrawer = drawing;
+    }
+
+    public boolean isClicked() {
+        return isClicked;
+    }
+
+    public void setClicked(boolean clicked) {
+        isClicked = clicked;
+    }
+
+    public String getRealWord() {
+        return realWord;
+    }
+
+    public void setRealWord(String realWord) {
+        this.realWord = realWord;
+    }
+
+    public String getHintWord() {
+        return hintWord;
+    }
+
+    public void setHintWord(String hintWord) {
+        this.hintWord = hintWord;
     }
 
     @Override

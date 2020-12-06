@@ -46,7 +46,7 @@ public class WordList {
                     wordsCount++;
                     line = reader.readLine();
                 }
-                ServerLog.Log("loaded " + wordsCount + " words from file..");
+                ServerLog.log("loaded " + wordsCount + " words from file..");
             }
             catch (IOException e) {
                 e.printStackTrace();

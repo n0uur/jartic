@@ -15,5 +15,6 @@ public class S2C_UpdateServerData extends ServerPacket {
     public String hintWord;
     public String realWord;
     public int timeLeftInSeconds;
+    public int drawerId;
 
 }

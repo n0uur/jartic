@@ -166,4 +166,12 @@ public class GameClientView extends javax.swing.JFrame {
     public void scrollToBottom() {
         jScrollPane1.getVerticalScrollBar().setValue(jScrollPane1.getVerticalScrollBar().getMaximum());
     }
+
+    public JLabel getCurrentDrawing() {
+        return currentDrawing;
+    }
+
+    public void setCurrentDrawing(JLabel currentDrawing) {
+        this.currentDrawing = currentDrawing;
+    }
 }

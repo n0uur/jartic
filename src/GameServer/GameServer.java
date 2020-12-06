@@ -50,11 +50,11 @@ public class GameServer {
     //
 
     public GameServer() {
-        ServerLog.Log("Initializing Server..");
+        ServerLog.log("Initializing Server..");
 
         this.packets = new ArrayList<ClientPacket>();
 
-        ServerLog.Log("Creating Server worker & listener..");
+        ServerLog.log("Creating Server worker & listener..");
 
         this.serverNetworkListener = new ServerNetworkListener(this);
         this.networkListenerThread = new Thread(this.serverNetworkListener);
@@ -64,11 +64,11 @@ public class GameServer {
         this.packetHandlerThead = new Thread(this.serverPacketHandler);
         this.packetHandlerThead.start();
 
-        ServerLog.Log("Creating game object..");
+        ServerLog.log("Creating game object..");
 
         WordList.loadWordList();
 
-        ServerLog.Log("Server start successfully..");
+        ServerLog.log("Server start successfully..");
     }
 
     public void update() {
@@ -76,11 +76,9 @@ public class GameServer {
         long currentTime = System.currentTimeMillis();
 
         // check if player not enough then reset game to waiting status !
-        if(ServerPlayer.getPlayers().size() < 2) {
+        if(ServerPlayer.getPlayers().size() < 2 && this.getCurrentGameStatus() != GameServerStatus.GAME_WAITING) {
 
-            if(this.getCurrentGameStatus() != GameServerStatus.GAME_WAITING) {
-                this.setCurrentGameStatus(GameServerStatus.GAME_ENDED); // instant end game if player not enough.
-            }
+            this.setCurrentGameStatus(GameServerStatus.GAME_WAITING); // instant end game if player not enough.
 
         }
 
@@ -92,7 +90,7 @@ public class GameServer {
 
                 if(currentTime - player.getLastResponse() > 10000 && !player.isRequestedHeartBeat()) {
 
-                    ServerLog.Log(player.getPlayerProfile().getName() + " has no responses in 10 seconds..");
+                    ServerLog.log(player.getPlayerProfile().getName() + " has no responses in 10 seconds..");
 
                     S2C_RequestHeartBeat requestPacket = new S2C_RequestHeartBeat();
                     requestPacket.sendToClient(player.getPeerId());
@@ -108,7 +106,7 @@ public class GameServer {
                     leftMessage.flag = S2C_ChatMessage.messageFlag.MESSAGE_DANGER;
                     leftMessage.message = player.getPlayerProfile().getName() + " has lost his/her connection with our game :(";
 
-                    ServerLog.Log(player.getPlayerProfile().getName() + " has lost his/her connection.");
+                    ServerLog.log(player.getPlayerProfile().getName() + " has lost his/her connection.");
 
                     leftMessage.broadcastToClient();
 
@@ -119,7 +117,7 @@ public class GameServer {
         }
 
         // broadcast game data update if it's too long
-        if(this.lastBroadcastDataUpdate > 1000) {
+        if(currentTime - this.lastBroadcastDataUpdate > 1000) {
             this.broadcastGameDataUpdate();
         }
 
@@ -251,7 +249,7 @@ public class GameServer {
 
                 isGameEndedBroadcastScore = false;
 
-                this.setCurrentGameStatus(GameServerStatus.GAME_STARTING);
+                this.setCurrentGameStatus(GameServerStatus.GAME_WAITING);
 
             }
 
@@ -261,14 +259,14 @@ public class GameServer {
     }
 
     public void destroy() {
-        ServerLog.Log("Server is shutting down..");
+        ServerLog.log("Server is shutting down..");
 
         this.serverNetworkListener.destroy();
         this.serverPacketHandler.destroy();
 
         // todo : tell all player server is closing..
 
-        ServerLog.Log("Bye!");
+        ServerLog.log("Bye!");
 
     }
 
@@ -289,7 +287,7 @@ public class GameServer {
     }
 
     public synchronized void addNetworkIncomePacket(ClientPacket clientPacket) {
-        ServerLog.Log("Incoming packet ["+ clientPacket.PacketId +"]");
+        ServerLog.log("Incoming packet ["+ clientPacket.PacketId +"]");
         this.packets.add(clientPacket);
     }
 
@@ -307,6 +305,8 @@ public class GameServer {
 
     public void setCurrentGameStatus(GameServerStatus currentGameStatus) {
 
+        ServerLog.log("Server changed state to " + currentGameStatus.toString() );
+
         if(currentGameStatus == GameServerStatus.GAME_PLAYING) {
             this.startPlayingTime = System.currentTimeMillis();
         }
@@ -317,7 +317,6 @@ public class GameServer {
 
     public void broadcastGameDataUpdate() {
         // todo : broadcast player current game state, update game, game data
-        this.lastBroadcastDataUpdate = System.currentTimeMillis();
 
         int timeLeft = 0;
         ArrayList<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
@@ -357,8 +356,12 @@ public class GameServer {
         updatePacket.playersProfile = profiles;
         updatePacket.hintWord = hintWord;
         updatePacket.realWord = realWord;
+        if(drawingPlayer != null)
+            updatePacket.drawerId = drawingPlayer.getPlayerProfile().getId();
 
         updatePacket.broadcastToClient();
+
+        this.lastBroadcastDataUpdate = System.currentTimeMillis();
 
     }
 }

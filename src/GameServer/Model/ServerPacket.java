@@ -32,11 +32,11 @@ public abstract class ServerPacket extends Packet {
         }
     }
 
-    public void broadcastToClient() {
+    public synchronized void broadcastToClient() {
 
-        ServerPlayer.getPlayers().forEach((player) -> {
-            sendToClient(player.getPeerId());
-        });
+        for (int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
+            sendToClient(ServerPlayer.getPlayers().get(i).getPeerId());
+        }
 
     }
 }

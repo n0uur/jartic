@@ -9,11 +9,14 @@ public class ClientPlayer {
     public static ArrayList<ClientPlayer> players;
 
     public static ArrayList<ClientPlayer> getPlayers() {
+        if(players == null) {
+            players = new ArrayList<>();
+        }
         return players;
     }
 
     public static ClientPlayer getPlayer(int id) {
-        for (int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < getPlayers().size(); i++) {
             ClientPlayer player = players.get(i);
             if (player.getPlayerProfile().getId() == id) {
                 return player;

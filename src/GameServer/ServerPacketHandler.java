@@ -46,7 +46,10 @@ public class ServerPacketHandler implements Runnable {
                         responsePacket.gameStatus = Shared.Model.GameServerStatus.GAME_PLAYING;
                         responsePacket.playerProfile = newServerPlayer.getPlayerProfile();
 
-                        // todo : broadcast chat message that player is join!, update game data
+                        S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                        chatPacket.message = gamePacket.playerName + " has join the game! <3";
+                        chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
+                        chatPacket.broadcastToClient();
                     }
 
                     responsePacket.sendToClient(gamePacket.playerIp, gamePacket.playerPort);
@@ -98,8 +101,6 @@ public class ServerPacketHandler implements Runnable {
                                         chatPacket.sendToClient(packetServerPlayer.getPeerId());
                                     }
 
-
-                                    //  else check the answer. if correct ; that player is correct. else broadcast that message.
                                 } else {
                                     S2C_ChatMessage chatPacket = new S2C_ChatMessage();
                                     chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "] " + gamePacket.message;

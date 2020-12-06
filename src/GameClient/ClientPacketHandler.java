@@ -5,7 +5,9 @@ import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
 import GameClient.UI.SelectWord;
 import GameServer.Model.ServerPacket;
+import Shared.Logger.GameLog;
 import Shared.Model.GamePacket.*;
+import Shared.Model.PlayerProfile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +49,9 @@ public class ClientPacketHandler implements Runnable {
                         else {
                             LocalPlayerData.setPlayerProfile(responsePacket.playerProfile);
                             LocalPlayerData.setToken(responsePacket.playerToken);
+                            LocalPlayerData.setId(responsePacket.playerProfile.getId());
+
+                            GameLog.warn("I'm " + LocalPlayerData.getPlayerProfile().getName() + " ("+ LocalPlayerData.getId() +")");
 
                             this.gameClient.setGameStatus(GameClientStatus.GAME_WAITING);
                         }
@@ -59,11 +64,28 @@ public class ClientPacketHandler implements Runnable {
                     }
                     else if(currentWork.PacketId == Packet.PacketID.S2C_UpdateServerData) {
 
+                        // todo : check if you are drawer and lost your turn, destroy word selection menu
+
                         S2C_UpdateServerData serverData = (S2C_UpdateServerData) currentWork;
 
                         ClientPlayer.updatePlayers(serverData.playersProfile);
 
+                        gameClient.setHintWord(serverData.hintWord);
+                        gameClient.setRealWord(serverData.realWord);
+
+                        gameClient.isDrawer(serverData.drawerId == LocalPlayerData.getId());
+
+//                        for (PlayerProfile profile:
+//                            serverData.playersProfile) {
+//                            if(profile.getId() == LocalPlayerData.getId()) {
+//                                gameClient.isDrawer(profile.isDrawing());
+//                                break;
+//                            }
+//                        }
+
                         gameClient.setGameServerState(serverData.gameServerStatus);
+
+                        gameClient.getGameClientView().drawPlayers();
 
                     }
                     else if(currentWork.PacketId == Packet.PacketID.S2C_ChatMessage) {
@@ -74,6 +96,8 @@ public class ClientPacketHandler implements Runnable {
                     }
                     else if(currentWork.PacketId == Packet.PacketID.S2C_RequestWord) {
                         S2C_RequestWord wordPacket = (S2C_RequestWord) currentWork;
+
+                        // todo : destroy old menu before creating new one...
 
                         gameClient.newSelectWord(wordPacket.words[0], wordPacket.words[1]);
                     }

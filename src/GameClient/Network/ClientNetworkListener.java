@@ -53,6 +53,8 @@ public class ClientNetworkListener implements Runnable {
 
                 this.gameClient.addServerPacket(realPacket);
 
+                GameLog.log("Incoming packet from server : " + packetName);
+
                 this.gameClient.serverResponse();
 
             } catch (IOException | ClassNotFoundException e) {
