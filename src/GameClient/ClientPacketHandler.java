@@ -7,6 +7,7 @@ import GameServer.Model.ServerPacket;
 import Shared.Model.GamePacket.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
 
 public class ClientPacketHandler implements Runnable {
@@ -60,7 +61,12 @@ public class ClientPacketHandler implements Runnable {
                         ClientPlayer.updatePlayers(serverData.playersProfile);
 
                         // todo : set game state
-
+                    }
+                    else if(currentWork.PacketId == Packet.PacketID.S2C_ChatMessage) {
+                        S2C_ChatMessage chatPacket = (S2C_ChatMessage) currentWork;
+                        GameClientView view = this.gameClient.getGameClientView();
+                        view.getChatLogMsg().setText(view.getChatLogMsg().getText() + chatPacket.message + '\n');
+                        view.scrollToBottom();
                     }
                 }
             }

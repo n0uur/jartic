@@ -69,11 +69,10 @@ public class GameClientView extends javax.swing.JFrame {
         canvas1.addMouseListener(gameClient);
         canvas1.addMouseMotionListener(gameClient);
 
-        chatLogMsg.setEditable(false);
         chatLogMsg.setColumns(35);
         chatLogMsg.setRows(5);
         chatLogMsg.setLineWrap(true);
-
+        chatLogMsg.setEditable(false);
 
         chatLogMsg.setFont(FontManager.getFont());
         jScrollPane1.setViewportView(chatLogMsg);
@@ -163,5 +162,8 @@ public class GameClientView extends javax.swing.JFrame {
         ClientPlayer.getPlayers().forEach((player) -> {
             playerList.add(new PlayerComponent(player.getPlayerProfile().getName()).getPlayerPanel());
         });
+    }
+    public void scrollToBottom() {
+        jScrollPane1.getVerticalScrollBar().setValue(jScrollPane1.getVerticalScrollBar().getMaximum());
     }
 }
