@@ -77,7 +77,10 @@ public class ServerPacketHandler implements Runnable {
                                         else {
                                             if(this.gameServer.getDrawingWord().equals(gamePacket.message)) {
                                                 S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                                chatPacket.message = gamePacket.message +" is the correct answer!";
+                                                chatPacket.message = gamePacket.message +
+                                                        " is the correct answer! ("+
+                                                        packetServerPlayer.getPlayerProfile().getScore() +
+                                                        " + "+ this.gameServer.getAnswerScore() +")";
                                                 chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
                                                 chatPacket.sendToClient(packetServerPlayer.getPeerId());
 
