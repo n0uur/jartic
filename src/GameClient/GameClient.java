@@ -71,7 +71,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
         long currentTime = System.currentTimeMillis();
 
-        if(currentTime - this.lastServerResponse > 10000) {
+        if(currentTime - this.lastServerResponse > 15000) {
             // todo : game time out.. exit :(
 
             JOptionPane.showMessageDialog(null, "Lost connection with server :(", "Error", JOptionPane.ERROR_MESSAGE);
