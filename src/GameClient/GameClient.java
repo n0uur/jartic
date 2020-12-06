@@ -222,6 +222,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
             C2S_SelectWord selectedPacket = new C2S_SelectWord();
             selectedPacket.word = selectedWord;
             selectedPacket.sendToServer();
+            selectWord.getSelectWordFrame().dispose();
         }
     }
 
