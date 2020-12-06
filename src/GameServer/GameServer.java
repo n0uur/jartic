@@ -8,7 +8,9 @@ import Shared.Logger.ServerLog;
 import Shared.Model.GamePacket.S2C_ChatMessage;
 import Shared.Model.GamePacket.S2C_RequestHeartBeat;
 import Shared.Model.GamePacket.S2C_RequestWord;
+import Shared.Model.GamePacket.S2C_UpdateServerData;
 import Shared.Model.GameServerStatus;
+import Shared.Model.PlayerProfile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,7 +119,7 @@ public class GameServer {
         }
 
         // broadcast game data update if it's too long
-        if(this.lastBroadcastDataUpdate > 2000) {
+        if(this.lastBroadcastDataUpdate > 1000) {
             this.broadcastGameDataUpdate();
         }
 
@@ -126,32 +128,41 @@ public class GameServer {
 
         if(this.getCurrentGameStatus() == GameServerStatus.GAME_WAITING) {
             if(ServerPlayer.getPlayers().size() >= 2) {
+                ServerLog.log("Game is starting with " + ServerPlayer.getPlayers().size() + "players.");
                 this.setCurrentGameStatus(GameServerStatus.GAME_STARTING);
             }
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_STARTING) {
 
+            ServerLog.log("Game starting round.");
+
             this.setCurrentGameStatus(GameServerStatus.GAME_STARTING_ROUND);
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_STARTING_ROUND) {
 
-
             this.playerDrawingQueue = new ArrayList<>(ServerPlayer.getPlayers());
             Collections.shuffle(this.playerDrawingQueue, new Random());
 
+            ServerLog.log("Randomized drawing queue!");
+
             this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
+
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
             if(!isStartWaitingWord) {
                 isStartWaitingWord = true;
                 startWaitingWordTime = System.currentTimeMillis();
+
+                ServerLog.log("Waiting "+ drawingPlayer.getPlayerProfile().getName() +" to selecting word...");
             }
 
-            if(currentTime - startWaitingWordTime > 10000) {
+            if(isStartWaitingWord && currentTime - startWaitingWordTime > 10000) {
+                ServerLog.warn(drawingPlayer.getPlayerProfile().getName() + " has lost his/her turn..");
                 this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
+                isStartWaitingWord = false;
             }
         }
 
@@ -164,7 +175,7 @@ public class GameServer {
 
             boolean allCorrected = true;
             for(int i = 0; i < ServerPlayer.getPlayers().size(); i++) {
-                if(!ServerPlayer.getPlayers().get(i).getPlayerProfile().isCorrected()) {
+                if(!ServerPlayer.getPlayers().get(i).getPlayerProfile().isDrawing() && !ServerPlayer.getPlayers().get(i).getPlayerProfile().isCorrected()) {
                     allCorrected = false;
                     break;
                 }
@@ -175,14 +186,29 @@ public class GameServer {
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_NEXT_PLAYER) {
-            if(this.playerDrawingQueue.get(0) != null) { // still have other in queue
+
+            ServerPlayer.getPlayers().forEach((player) -> {
+                player.getPlayerProfile().setCorrected(false);
+            });
+
+            if(this.playerDrawingQueue.size() > 0) { // still have other in queue
                 this.drawingPlayer = this.playerDrawingQueue.remove(0);
+
+                ServerLog.log(drawingPlayer.getPlayerProfile().getName() + " is current drawer!");
+
+                for (ServerPlayer player : ServerPlayer.getPlayers()) {
+                    player.getPlayerProfile().isDrawing(this.drawingPlayer.getPeerId() == player.getPeerId());
+                }
 
                 S2C_RequestWord requestWord = new S2C_RequestWord();
                 requestWord.words = WordList.getRandomWord(3);
                 requestWord.sendToClient(this.drawingPlayer.getPeerId());
+
+                ServerLog.log("requested words.");
+
+                this.setCurrentGameStatus(GameServerStatus.GAME_WAITING_WORD);
             }
-            else {
+            else if(this.playerDrawingQueue.size() <= 0) {
                 this.setCurrentGameStatus(GameServerStatus.GAME_ENDED_ROUND);
             }
         }
@@ -292,5 +318,47 @@ public class GameServer {
     public void broadcastGameDataUpdate() {
         // todo : broadcast player current game state, update game, game data
         this.lastBroadcastDataUpdate = System.currentTimeMillis();
+
+        int timeLeft = 0;
+        ArrayList<PlayerProfile> profiles = new ArrayList<PlayerProfile>();
+        String realWord = "";
+        String hintWord = "";
+
+        long currentTime = System.currentTimeMillis();
+
+        if(getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
+            timeLeft = (int) ((currentTime - this.startWaitingWordTime) / 1000);
+        }
+        else if(getCurrentGameStatus() == GameServerStatus.GAME_ENDED) {
+            timeLeft = (int) ((currentTime - this.gameEndedBroadcastScoreTime) / 1000);
+        }
+        else if(getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
+            timeLeft = (int) ((currentTime - this.startPlayingTime) / 1000);
+        }
+        else if(getCurrentGameStatus() == GameServerStatus.GAME_STARTING) {
+            // todo : add interval for starting game and calculate time left...
+        }
+
+        if(this.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
+            realWord = this.getDrawingWord();
+            for(int i = 0; i < realWord.length(); i++) {
+                hintWord += (realWord.charAt(i) != (char) ' ' ? "_" : ' ');
+            }
+        }
+
+        for (ServerPlayer player:
+             ServerPlayer.getPlayers()) {
+            profiles.add(player.getPlayerProfile());
+        }
+
+        S2C_UpdateServerData updatePacket = new S2C_UpdateServerData();
+        updatePacket.gameServerStatus = this.getCurrentGameStatus();
+        updatePacket.timeLeftInSeconds = timeLeft;
+        updatePacket.playersProfile = profiles;
+        updatePacket.hintWord = hintWord;
+        updatePacket.realWord = realWord;
+
+        updatePacket.broadcastToClient();
+
     }
 }

@@ -67,7 +67,7 @@ public class ServerPacketHandler implements Runnable {
                                     if(!packetServerPlayer.getPlayerProfile().isDrawing()) {
                                         if(packetServerPlayer.getPlayerProfile().isCorrected()) {
                                             S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                            chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "]" + gamePacket.message;
+                                            chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "] " + gamePacket.message;
                                             chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
                                             chatPacket.broadcastToClient();
                                         }
@@ -84,18 +84,25 @@ public class ServerPacketHandler implements Runnable {
                                             }
                                             else {
                                                 S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                                chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "]" + gamePacket.message;
+                                                chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "] " + gamePacket.message;
                                                 chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
                                                 chatPacket.broadcastToClient();
                                             }
                                         }
                                     }
 
+                                    else { // drawer type something...
+                                        S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                        chatPacket.message = "[Server] You don't have permission to type anything at this time. JUST DRAW!";
+                                        chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
+                                        chatPacket.sendToClient(packetServerPlayer.getPeerId());
+                                    }
+
 
                                     //  else check the answer. if correct ; that player is correct. else broadcast that message.
                                 } else {
                                     S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-                                    chatPacket.message = gamePacket.message;
+                                    chatPacket.message = "[" + packetServerPlayer.getPlayerProfile().getName() + "] " + gamePacket.message;
                                     chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
                                     chatPacket.broadcastToClient();
                                 }
@@ -125,6 +132,8 @@ public class ServerPacketHandler implements Runnable {
                                 this.gameServer.setDrawingWord(gamePacket.word);
                                 this.gameServer.setStartWaitingWord(false);
                                 this.gameServer.setCurrentGameStatus(GameServerStatus.GAME_PLAYING);
+
+                                ServerLog.log("Player selected : " + gamePacket.word);
 
                             } else {
                                 ServerLog.error("Player selecting word while server is not require!.");
