@@ -123,6 +123,7 @@ public class ServerPacketHandler implements Runnable {
                             if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
 
                                 this.gameServer.setDrawingWord(gamePacket.word);
+                                this.gameServer.setStartWaitingWord(false);
                                 this.gameServer.setCurrentGameStatus(GameServerStatus.GAME_PLAYING);
 
                             } else {

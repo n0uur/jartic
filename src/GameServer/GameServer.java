@@ -42,6 +42,9 @@ public class GameServer {
     private boolean isGameEndedBroadcastScore;
     private long gameEndedBroadcastScoreTime;
 
+    private boolean isStartWaitingWord;
+    private long startWaitingWordTime;
+
     //
 
     public GameServer() {
@@ -142,6 +145,17 @@ public class GameServer {
             this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
         }
 
+        else if(this.getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
+            if(!isStartWaitingWord) {
+                isStartWaitingWord = true;
+                startWaitingWordTime = System.currentTimeMillis();
+            }
+
+            if(currentTime - startWaitingWordTime > 10000) {
+                this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
+            }
+        }
+
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
             // todo : check if timed out
             if(currentTime - this.startPlayingTime > 30000) { // more than 30 seconds stop it!
@@ -233,6 +247,14 @@ public class GameServer {
 
         ServerLog.Log("Bye!");
 
+    }
+
+    public boolean isStartWaitingWord() {
+        return isStartWaitingWord;
+    }
+
+    public void setStartWaitingWord(boolean startWaitingWord) {
+        isStartWaitingWord = startWaitingWord;
     }
 
     public String getDrawingWord() {
