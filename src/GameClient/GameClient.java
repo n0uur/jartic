@@ -3,6 +3,7 @@ package GameClient;
 import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
 import GameClient.Network.ClientNetworkListener;
+import Shared.Model.GamePacket.C2S_ChatMessage;
 import Shared.Model.GamePacket.C2S_JoinGame;
 import GameServer.Model.ServerPacket;
 
@@ -102,11 +103,19 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
             sendChatMessage();
     }
+
+    public GameClientView getGameClientView() {
+        return gameClientView;
+    }
+
     public void sendChatMessage() {
         if(!this.gameClientView.getChatMsgInput().getText().isEmpty()) {
-            String msgToSend = this.gameClientView.getChatMsgInput().getText() + '\n';
+            String msgToSend = this.gameClientView.getChatMsgInput().getText();
             this.gameClientView.getChatMsgInput().setText(this.gameClientView.getChatLogMsg().getText() + msgToSend);
             this.gameClientView.getChatMsgInput().setText(null);
+            C2S_ChatMessage chatMessage = new C2S_ChatMessage();
+            chatMessage.message = msgToSend;
+            chatMessage.sendToServer();
         }
     }
 
