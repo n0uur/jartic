@@ -64,4 +64,12 @@ public class SelectWord {
     public JFrame getSelectWordFrame() {
         return selectWordFrame;
     }
+
+    public JButton getWord1() {
+        return word1;
+    }
+
+    public JButton getWord2() {
+        return word2;
+    }
 }

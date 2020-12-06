@@ -3,9 +3,11 @@ package GameClient;
 import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
 import GameClient.Network.ClientNetworkListener;
+import GameClient.UI.SelectWord;
 import Shared.Model.GamePacket.C2S_ChatMessage;
 import Shared.Model.GamePacket.C2S_JoinGame;
 import GameServer.Model.ServerPacket;
+import Shared.Model.GamePacket.C2S_SelectWord;
 import Shared.Model.GameServerStatus;
 
 import javax.swing.*;
@@ -33,6 +35,8 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     private int[][] drawPoints;
 
     private GameServerStatus gameServerState;
+
+    private SelectWord selectWord;
 
     public GameClient() {
 
@@ -213,6 +217,15 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     }
 
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(selectWord.getWord1()) || e.getSource().equals(selectWord.getWord2())) {
+            String selectedWord = ((JButton) e.getSource()).getText();
+            C2S_SelectWord selectedPacket = new C2S_SelectWord();
+            selectedPacket.word = selectedWord;
+            selectedPacket.sendToServer();
+        }
+    }
 
+    public void newSelectWord(String word1, String word2) {
+        selectWord = new SelectWord( this ,word1, word2);
     }
 }

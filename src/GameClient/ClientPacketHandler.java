@@ -61,7 +61,6 @@ public class ClientPacketHandler implements Runnable {
 
                         ClientPlayer.updatePlayers(serverData.playersProfile);
 
-                        // todo : set game state
                         gameClient.setGameServerState(serverData.gameServerStatus);
 
                     }
@@ -74,11 +73,7 @@ public class ClientPacketHandler implements Runnable {
                     else if(currentWork.PacketId == Packet.PacketID.S2C_RequestWord) {
                         S2C_RequestWord wordPacket = (S2C_RequestWord) currentWork;
 
-                        // todo : show select word dialog and send back to server using C2S_SelectWord
-
-                        new SelectWord(gameClient, wordPacket.words[0], wordPacket.words[1]);
-
-                        //  wordPacket.words
+                        gameClient.newSelectWord(wordPacket.words[0], wordPacket.words[1]);
                     }
                 }
             }
