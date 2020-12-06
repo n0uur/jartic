@@ -47,6 +47,7 @@ public class SelectWord {
         selectWordFrame.add(buttonPanel, BorderLayout.CENTER);
 
         word1.addActionListener(gameClient);
+        word2.addActionListener(gameClient);
 
         Dimension d = new Dimension();
         d.height = 300;
