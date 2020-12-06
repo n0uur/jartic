@@ -3,6 +3,7 @@ package GameClient;
 import GameClient.Model.ClientPlayer;
 import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
+import GameClient.UI.SelectWord;
 import GameServer.Model.ServerPacket;
 import Shared.Model.GamePacket.*;
 
@@ -61,6 +62,8 @@ public class ClientPacketHandler implements Runnable {
                         ClientPlayer.updatePlayers(serverData.playersProfile);
 
                         // todo : set game state
+                        gameClient.setGameServerState(serverData.gameServerStatus);
+
                     }
                     else if(currentWork.PacketId == Packet.PacketID.S2C_ChatMessage) {
                         S2C_ChatMessage chatPacket = (S2C_ChatMessage) currentWork;
@@ -72,6 +75,9 @@ public class ClientPacketHandler implements Runnable {
                         S2C_RequestWord wordPacket = (S2C_RequestWord) currentWork;
 
                         // todo : show select word dialog and send back to server using C2S_SelectWord
+
+                        new SelectWord(gameClient, wordPacket.words[0], wordPacket.words[1]);
+
                         //  wordPacket.words
                     }
                 }

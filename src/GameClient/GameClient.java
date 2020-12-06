@@ -6,13 +6,14 @@ import GameClient.Network.ClientNetworkListener;
 import Shared.Model.GamePacket.C2S_ChatMessage;
 import Shared.Model.GamePacket.C2S_JoinGame;
 import GameServer.Model.ServerPacket;
+import Shared.Model.GameServerStatus;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class GameClient implements MouseListener, MouseMotionListener, KeyListener{
+public class GameClient implements MouseListener, MouseMotionListener, KeyListener, ActionListener{
     private boolean isClicked = false;
     private GameClientView gameClientView;
     private int mouseBtn, posXMouse, posYMouse;
@@ -30,6 +31,8 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     private long lastServerResponse;
 
     private int[][] drawPoints;
+
+    private GameServerStatus gameServerState;
 
     public GameClient() {
 
@@ -198,6 +201,18 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    public GameServerStatus getGameServerState() {
+        return gameServerState;
+    }
+
+    public void setGameServerState(GameServerStatus gameServerState) {
+        this.gameServerState = gameServerState;
+    }
+
+    public void actionPerformed(ActionEvent e) {
 
     }
 }
