@@ -70,21 +70,30 @@ public class ServerPacketHandler implements Runnable {
                             } else {
                                 ServerLog.error("Player selecting word while server is not request!.");
                             }
-                        } else if (currentWork.PacketId == Packet.PacketID.C2S_HeartBeat) {
+                        }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_HeartBeat) {
                             C2S_HeartBeat gamePacket = (C2S_HeartBeat) currentWork;
-                        } else if (currentWork.PacketId == Packet.PacketID.C2S_RequestUpdatePlayers) { // update all players
+                        }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_RequestUpdatePlayers) { // update all players
                             C2S_RequestUpdatePlayers gamePacket = (C2S_RequestUpdatePlayers) currentWork;
-                        } else if (currentWork.PacketId == Packet.PacketID.C2S_RequestUpdateProfile) { // update only his/her profile
+                        }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_RequestUpdateProfile) { // update only his/her profile
                             C2S_RequestUpdateProfile gamePacket = (C2S_RequestUpdateProfile) currentWork;
-                        } else if (currentWork.PacketId == Packet.PacketID.C2S_RequestUpdateWhiteBoard) {
+                        }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_RequestUpdateWhiteBoard) {
                             C2S_RequestUpdateWhiteBoard gamePacket = (C2S_RequestUpdateWhiteBoard) currentWork;
-                        } else if (currentWork.PacketId == Packet.PacketID.C2S_SelectWord) { // drawing player selected word!
+                        }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_SelectWord) { // drawing player selected word!
+
                             C2S_SelectWord gamePacket = (C2S_SelectWord) currentWork;
 
                             // todo : another check if player is drawer. if not then ignore it.
 
                             if (this.gameServer.getCurrentGameStatus() == GameServerStatus.GAME_WAITING_WORD) {
+
+                                this.gameServer.setDrawingWord(gamePacket.word);
                                 this.gameServer.setCurrentGameStatus(GameServerStatus.GAME_PLAYING);
+
                             } else {
                                 ServerLog.error("Player selecting word while server is not require!.");
                             }

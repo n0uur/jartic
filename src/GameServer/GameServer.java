@@ -235,6 +235,14 @@ public class GameServer {
 
     }
 
+    public String getDrawingWord() {
+        return drawingWord;
+    }
+
+    public void setDrawingWord(String drawingWord) {
+        this.drawingWord = drawingWord;
+    }
+
     public synchronized void addNetworkIncomePacket(ClientPacket clientPacket) {
         ServerLog.Log("Incoming packet ["+ clientPacket.PacketId +"]");
         this.packets.add(clientPacket);
@@ -254,10 +262,7 @@ public class GameServer {
 
     public void setCurrentGameStatus(GameServerStatus currentGameStatus) {
 
-        if(currentGameStatus == GameServerStatus.GAME_WAITING_WORD) {
-            // todo : send words to player
-        }
-        else if(currentGameStatus == GameServerStatus.GAME_PLAYING) {
+        if(currentGameStatus == GameServerStatus.GAME_PLAYING) {
             this.startPlayingTime = System.currentTimeMillis();
         }
 
