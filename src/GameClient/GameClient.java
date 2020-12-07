@@ -41,6 +41,19 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     private String hintWord;
     private int timer;
 
+    protected int[][] points = new int[928][424];
+    private boolean dragging = false;
+    private Point last;
+    private boolean isErasing;
+
+    public boolean isErasing() {
+        return isErasing;
+    }
+
+    public void setErasing(boolean erasing) {
+        isErasing = erasing;
+    }
+
     private SelectWord selectWord;
 
     public GameClient() {
@@ -80,7 +93,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
         this.realWord = "";
         this.hintWord = "";
 
-        this.drawPoints = new int[900][400];
+        this.drawPoints = new int[928][424];
     }
 
     public void update() {
@@ -209,12 +222,17 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void mousePressed(MouseEvent e) {
-        this.setMouseBtn(e.getButton());
+        last = e.getPoint();
+        dragging = true;
+        this.getGameClientView().getCanvasPanel().repaint();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        this.isClicked = !this.isClicked;
+        last = null;
+        dragging = false;
+        setErasing(false);
+        this.getGameClientView().getCanvasPanel().repaint();
     }
 
     @Override
@@ -222,30 +240,34 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
         this.gameClientView.getCanvas1().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
+    public int[][] getPoints() {
+        return points;
+    }
+
     @Override
     public void mouseExited(MouseEvent e) {
-
+//        setErasing(false);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
-        int mousePosX = e.getX();
-        int mousePosY = e.getY();
-        int mouseBtn = this.getMouseBtn();
-
-        if(this.getMouseBtn() == 1) {
-            try {
-                drawPoints[mousePosX][mousePosY] = 1;
-            }catch (ArrayIndexOutOfBoundsException Ignored){}
-        }
-        else if(this.getMouseBtn() == 3) {
-            try {
-                drawPoints[mousePosX][mousePosY] = 0;
-            }catch (ArrayIndexOutOfBoundsException Ignored){}
-        }
-
-        this.gameClientView.doDrawing(mousePosX, mousePosY, mouseBtn);
+        try {
+            if(dragging ) {
+                if(e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
+                    setErasing(false);
+                    points[e.getX()][e.getY()] = 1;
+                }
+                else {
+                    setErasing(true);
+                    for(int i = Math.max(e.getX() - 15, 0); i < Math.min(e.getX() + 15, 928); i++) {
+                        for(int j = Math.max(e.getY() - 15, 0); j < Math.min(e.getY() + 15, 424); j++) {
+                            points[i][j] = 0;
+                        }
+                    }
+                }
+            }
+        }catch (ArrayIndexOutOfBoundsException Ignored){}
+        this.getGameClientView().getCanvasPanel().repaint();
     }
 
     @Override

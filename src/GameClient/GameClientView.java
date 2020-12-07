@@ -1,8 +1,10 @@
 package GameClient;
 
+import GameClient.UI.CanvasPanel;
 import GameClient.Model.ClientPlayer;
 import GameClient.UI.FontManager;
 import GameClient.UI.PlayerComponent;
+import Shared.Logger.GameLog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +14,9 @@ public class GameClientView extends javax.swing.JFrame {
     private javax.swing.JTextArea chatLogMsg;
     private javax.swing.JTextField chatMsgInput;
     private javax.swing.JLabel currentDrawing;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel2, jPanel3, playerList, canvasPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel player;
-    private javax.swing.JPanel playerList;
     private GameClient gameClient;
 
     public Canvas getCanvas1() {
@@ -31,12 +31,21 @@ public class GameClientView extends javax.swing.JFrame {
         return chatLogMsg;
     }
 
+    public JPanel getCanvasPanel() {
+        return canvasPanel;
+    }
+
+    public GameClient getGameClient() {
+        return gameClient;
+    }
+
     public GameClientView(GameClient gameClient) {
         this.gameClient = gameClient;
         playerList = new javax.swing.JPanel();
         player = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         canvas1 = new java.awt.Canvas();
+        canvasPanel = new CanvasPanel(this);
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         chatLogMsg = new javax.swing.JTextArea();
@@ -62,12 +71,10 @@ public class GameClientView extends javax.swing.JFrame {
 //        for (int i = 1; i < 12; i++)
 //            playerList.add(new PlayerComponent("Tester " + i).getPlayerPanel());
 
-        canvas1.setSize(900, 400);
-        canvas1.setBackground(new java.awt.Color(255, 255, 255));
-
-        this.jPanel2.add(this.canvas1);
-        canvas1.addMouseListener(gameClient);
-        canvas1.addMouseMotionListener(gameClient);
+        canvasPanel.addMouseListener(gameClient);
+        canvasPanel.addMouseMotionListener(gameClient);
+        this.jPanel2.setLayout(new GridLayout(1, 1));
+        this.jPanel2.add(this.canvasPanel);
 
         chatLogMsg.setColumns(35);
         chatLogMsg.setRows(5);
@@ -137,6 +144,7 @@ public class GameClientView extends javax.swing.JFrame {
 
         pack();
         setVisible(true);
+        GameLog.warn(this.jPanel2.getSize() + "");
     }
 
     public void doDrawing(int mousePosX, int mousePosY, int mouseBtn) {
