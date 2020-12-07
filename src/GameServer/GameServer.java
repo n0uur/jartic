@@ -274,6 +274,10 @@ public class GameServer {
 
     }
 
+    public int getDrawingTimeLeft() {
+        return (int) ((this.startPlayingTime + 30000 - System.currentTimeMillis()) / 1000);
+    }
+
     public int getAnswerScore() {
         return answerScore;
     }
@@ -375,5 +379,13 @@ public class GameServer {
 
         this.lastBroadcastDataUpdate = System.currentTimeMillis();
 
+    }
+
+    public ServerPlayer getDrawingPlayer() {
+        return drawingPlayer;
+    }
+
+    public void setDrawingPlayer(ServerPlayer drawingPlayer) {
+        this.drawingPlayer = drawingPlayer;
     }
 }

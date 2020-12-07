@@ -84,7 +84,18 @@ public class ServerPacketHandler implements Runnable {
                                                 chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
                                                 chatPacket.sendToClient(packetServerPlayer.getPeerId());
 
+                                                chatPacket = new S2C_ChatMessage();
+                                                chatPacket.message = "[Server] "+ packetServerPlayer.getPlayerProfile().getName() + " has guess the correct answer!";
+                                                chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_NORMAL;
+                                                chatPacket.broadcastToClient();
+
                                                 packetServerPlayer.getPlayerProfile().setCorrected(true);
+
+                                                ServerLog.warn((this.gameServer.getDrawingTimeLeft() / 3) + "");
+
+                                                this.gameServer.getDrawingPlayer().getPlayerProfile().setScore(
+                                                        this.gameServer.getDrawingPlayer().getPlayerProfile().getScore() + (this.gameServer.getDrawingTimeLeft() / 3)
+                                                );
 
                                                 packetServerPlayer.getPlayerProfile().setScore(packetServerPlayer.getPlayerProfile().getScore() + this.gameServer.getAnswerScore());
                                                 this.gameServer.setAnswerScore(this.gameServer.getAnswerScore() - 1);
