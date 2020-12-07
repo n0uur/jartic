@@ -18,16 +18,18 @@ public class DrawingBoard {
     }
 
     public void update(int x, int y, int value) {
-        if(value == 1) {
-            drawingPoints[x][y] = value;
-        }
-        else if(value == 0) {
-            for(int i = Math.max(x - 15, 0); i < Math.min(x + 15, 928); i++) {
-                for(int j = Math.max(y - 15, 0); j < Math.min(y + 15, 424); j++) {
-                    drawingPoints[i][j] = 0;
+        try {
+            if (value == 1) {
+                drawingPoints[x][y] = 1;
+            } else if (value == 0) {
+                for (int i = Math.max(x - 15, 0); i < Math.min(x + 15, 928); i++) {
+                    for (int j = Math.max(y - 15, 0); j < Math.min(y + 15, 424); j++) {
+                        drawingPoints[i][j] = 0;
+                    }
                 }
             }
         }
+        catch (ArrayIndexOutOfBoundsException ignored) { }
     }
 
     public void clear() {

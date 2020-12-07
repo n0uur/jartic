@@ -40,6 +40,10 @@ public class ClientPacketHandler implements Runnable {
 
 //                    GameLog.Log("Hay! I got some job! [" + currentWork.PacketId + "]");
 
+                    if(currentWork == null) {
+                        continue;
+                    }
+
                     if(currentWork.PacketId == Packet.PacketID.S2C_AcceptJoinGameRequest) {
 
                         S2C_AcceptJoinGameRequest responsePacket = (S2C_AcceptJoinGameRequest) currentWork;
