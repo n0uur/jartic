@@ -4,6 +4,7 @@ import GameClient.UI.CanvasPanel;
 import GameClient.Model.ClientPlayer;
 import GameClient.UI.FontManager;
 import GameClient.UI.PlayerComponent;
+import GameClient.UI.PlayerPanel;
 import Shared.Logger.GameLog;
 
 import javax.swing.*;
@@ -13,11 +14,13 @@ public class GameClientView extends javax.swing.JFrame {
     private java.awt.Canvas canvas1;
     private javax.swing.JTextArea chatLogMsg;
     private javax.swing.JTextField chatMsgInput;
+
     private javax.swing.JLabel currentDrawing;
     private javax.swing.JPanel jPanel2, jPanel3, playerList, canvasPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel player;
     private GameClient gameClient;
+    private PlayerPanel playerPanel;
 
     public Canvas getCanvas1() {
         return canvas1;
@@ -51,6 +54,7 @@ public class GameClientView extends javax.swing.JFrame {
         chatLogMsg = new javax.swing.JTextArea();
         chatMsgInput = new javax.swing.JTextField();
         currentDrawing = new javax.swing.JLabel();
+        playerPanel = new PlayerPanel(this);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jartic");
@@ -163,18 +167,18 @@ public class GameClientView extends javax.swing.JFrame {
     }
 
     public void drawPlayers() {
-
+        playerPanel.repaint();
+//        playerList.removeAll();
+//        playerList.add(player);
+//
+//        ClientPlayer.getPlayers().forEach((player) -> {
+//            playerList.add(new PlayerComponent(player.getPlayerProfile().getName(), player.getPlayerProfile().getScore()).getPlayerPanel());
+//        });
+//
+//        this.revalidate();
+//        this.repaint();
         GameLog.log("updating player..." + ClientPlayer.getPlayers().size());
 
-        playerList.removeAll();
-        playerList.add(player);
-
-        ClientPlayer.getPlayers().forEach((player) -> {
-            playerList.add(new PlayerComponent(player.getPlayerProfile().getName(), player.getPlayerProfile().getScore()).getPlayerPanel());
-        });
-
-        this.revalidate();
-        this.repaint();
     }
     public void scrollToBottom() {
         jScrollPane1.getVerticalScrollBar().setValue(jScrollPane1.getVerticalScrollBar().getMaximum());
