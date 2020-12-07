@@ -17,7 +17,8 @@ public class PlayerComponent {
     private Border padding;
     private int playerScore;
 
-    public PlayerComponent(String playerName) {
+    public PlayerComponent(String playerName, int playerScore) {
+        this.playerScore = playerScore;
         this.playerPanel = new JPanel();
         this.playerInfoPanel = new JPanel();
         this.playerName = new JLabel(playerName);

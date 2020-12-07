@@ -163,12 +163,18 @@ public class GameClientView extends javax.swing.JFrame {
     }
 
     public void drawPlayers() {
-        playerList = new JPanel();
+
+        GameLog.log("updating player..." + ClientPlayer.getPlayers().size());
+
+        playerList.removeAll();
         playerList.add(player);
 
         ClientPlayer.getPlayers().forEach((player) -> {
-            playerList.add(new PlayerComponent(player.getPlayerProfile().getName()).getPlayerPanel());
+            playerList.add(new PlayerComponent(player.getPlayerProfile().getName(), player.getPlayerProfile().getScore()).getPlayerPanel());
         });
+
+        this.revalidate();
+        this.repaint();
     }
     public void scrollToBottom() {
         jScrollPane1.getVerticalScrollBar().setValue(jScrollPane1.getVerticalScrollBar().getMaximum());
