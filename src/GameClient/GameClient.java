@@ -15,7 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class GameClient implements MouseListener, MouseMotionListener, KeyListener, ActionListener, WindowListener{
+public class GameClient implements MouseListener, MouseMotionListener, KeyListener, ActionListener, WindowListener {
     private boolean isClicked = false;
     private GameClientView gameClientView;
     private int mouseBtn, posXMouse, posYMouse;
@@ -237,7 +237,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.gameClientView.getCanvas1().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+//        this.gameClientView.getCanvas1().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     public int[][] getPoints() {
@@ -294,7 +294,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        this.gameClientView.getCanvasPanel().repaint();
     }
 
     @Override
@@ -388,6 +388,5 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     public DrawingBoard getDrawingBoard() {
         return drawingBoard;
     }
-
 
 }
