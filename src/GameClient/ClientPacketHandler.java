@@ -77,8 +77,12 @@ public class ClientPacketHandler implements Runnable {
 
                         gameClient.setGameServerState(serverData.gameServerStatus);
 
-                        if(serverData.gameServerStatus == GameServerStatus.GAME_NEXT_PLAYER)
+                        if(serverData.gameServerStatus == GameServerStatus.GAME_NEXT_PLAYER) {
                             gameClient.destroySelectWord();
+                            gameClient.getDrawingBoard().clear();
+                            gameClient.getGameClientView().getCanvasPanel().repaint();
+                        }
+
                         gameClient.getGameClientView().drawPlayers();
 
                     }
@@ -96,7 +100,14 @@ public class ClientPacketHandler implements Runnable {
                     else if(currentWork.PacketId == Packet.PacketID.S2C_UpdateWhiteBoard) {
                         S2C_UpdateWhiteBoard whiteBoardPacket = (S2C_UpdateWhiteBoard) currentWork;
 
-                        this.gameClient.getDrawingBoard().fromString(whiteBoardPacket.whiteboard);
+                        if(whiteBoardPacket.needToClear) {
+                            this.gameClient.getDrawingBoard().clear();
+                        }
+                        else {
+                            this.gameClient.getDrawingBoard().update(whiteBoardPacket.x, whiteBoardPacket.y, whiteBoardPacket.value);
+                        }
+
+                        this.gameClient.getGameClientView().getCanvasPanel().repaint();
                     }
                 }
             }

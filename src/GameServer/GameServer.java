@@ -5,10 +5,7 @@ import GameServer.Model.WordList;
 import GameServer.Network.ServerNetworkListener;
 import GameClient.Model.ClientPacket;
 import Shared.Logger.ServerLog;
-import Shared.Model.GamePacket.S2C_ChatMessage;
-import Shared.Model.GamePacket.S2C_RequestHeartBeat;
-import Shared.Model.GamePacket.S2C_RequestWord;
-import Shared.Model.GamePacket.S2C_UpdateServerData;
+import Shared.Model.GamePacket.*;
 import Shared.Model.GameServerStatus;
 import Shared.Model.PlayerProfile;
 
@@ -209,6 +206,11 @@ public class GameServer {
                 ServerLog.log("requested words.");
 
                 setAnswerScore(10);
+
+                // clear canvas
+                S2C_UpdateWhiteBoard whiteBoardPacket = new S2C_UpdateWhiteBoard();
+                whiteBoardPacket.needToClear = true;
+                whiteBoardPacket.broadcastToClient();
 
                 this.setCurrentGameStatus(GameServerStatus.GAME_WAITING_WORD);
             }

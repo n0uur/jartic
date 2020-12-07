@@ -158,13 +158,15 @@ public class ServerPacketHandler implements Runnable {
                         else if (currentWork.PacketId == Packet.PacketID.C2S_UpdateWhiteBoard) { // drawing player update his/her white board
                             C2S_UpdateWhiteBoard gamePacket = (C2S_UpdateWhiteBoard) currentWork;
 
-                            if(System.currentTimeMillis() - this.gameServer.getLastBroadcastWhiteboard() > 500) {
+//                            if(System.currentTimeMillis() - this.gameServer.getLastBroadcastWhiteboard() > 500) {
                                 this.gameServer.setLastBroadcastWhiteboard(System.currentTimeMillis());
 
                                 S2C_UpdateWhiteBoard whiteBoardPacket = new S2C_UpdateWhiteBoard();
-                                whiteBoardPacket.whiteboard = gamePacket.currentBoard;
+                                whiteBoardPacket.x = gamePacket.x;
+                                whiteBoardPacket.y = gamePacket.y;
+                                whiteBoardPacket.value = gamePacket.value;
                                 whiteBoardPacket.broadcastToClient();
-                            }
+//                            }
                         }
                         else if (currentWork.PacketId == Packet.PacketID.C2S_GameClose) {
 

@@ -254,25 +254,39 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
             if(dragging && isDrawer()) {
                 if(e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
                     setErasing(false);
-                    this.drawingBoard.getDrawingPoints()[e.getX()][e.getY()] = 1;
+//                    this.drawingBoard.getDrawingPoints()[e.getX()][e.getY()] = 1;
+                    C2S_UpdateWhiteBoard whiteBoardPacket = new C2S_UpdateWhiteBoard();
+
+                    whiteBoardPacket.x = e.getX();
+                    whiteBoardPacket.y = e.getY();
+                    whiteBoardPacket.value = 1;
+                    whiteBoardPacket.sendToServer();
                 }
                 else {
                     setErasing(true);
-                    for(int i = Math.max(e.getX() - 15, 0); i < Math.min(e.getX() + 15, 928); i++) {
-                        for(int j = Math.max(e.getY() - 15, 0); j < Math.min(e.getY() + 15, 424); j++) {
-                            this.drawingBoard.getDrawingPoints()[i][j] = 0;
-                        }
-                    }
-                }
-
-                if(System.currentTimeMillis() - lastUpdateDrawingBoard > 500) {
-                    lastUpdateDrawingBoard = System.currentTimeMillis();
 
                     C2S_UpdateWhiteBoard whiteBoardPacket = new C2S_UpdateWhiteBoard();
-                    whiteBoardPacket.currentBoard = this.drawingBoard.toString();
+
+                    whiteBoardPacket.x = e.getX();
+                    whiteBoardPacket.y = e.getY();
+                    whiteBoardPacket.value = 0;
                     whiteBoardPacket.sendToServer();
 
+//                    for(int i = Math.max(e.getX() - 15, 0); i < Math.min(e.getX() + 15, 928); i++) {
+//                        for(int j = Math.max(e.getY() - 15, 0); j < Math.min(e.getY() + 15, 424); j++) {
+//                            this.drawingBoard.getDrawingPoints()[i][j] = 0;
+//                        }
+//                    }
                 }
+
+//                if(System.currentTimeMillis() - lastUpdateDrawingBoard > 500) {
+//                    lastUpdateDrawingBoard = System.currentTimeMillis();
+//
+//                    C2S_UpdateWhiteBoard whiteBoardPacket = new C2S_UpdateWhiteBoard();
+//                    whiteBoardPacket.currentBoard = this.drawingBoard.toString();
+//                    whiteBoardPacket.sendToServer();
+//
+//                }
             }
         }catch (ArrayIndexOutOfBoundsException Ignored){}
         this.getGameClientView().getCanvasPanel().repaint();

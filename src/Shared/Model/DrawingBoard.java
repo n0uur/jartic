@@ -13,27 +13,21 @@ public class DrawingBoard {
         this.drawingPoints = new int[x][y];
     }
 
-    public void fromString(String s) {
-        String rawString = RunLength.decode(s);
-        for(int i = 0; i < s.length(); i++) {
-            drawingPoints[i % sizeX][Math.floorDiv(i, sizeX)] = rawString.charAt(i);
-        }
-    }
-
     public int[][] getDrawingPoints() {
         return this.drawingPoints;
     }
 
-    public String toString() {
-        GameLog.log("converting to string...");
-        String result = "";
-        for(int i = 0; i < sizeX; i++) {
-            for(int j = 0; j < sizeY; j++) {
-                result += drawingPoints[i][j] + "";
+    public void update(int x, int y, int value) {
+        if(value == 1) {
+            drawingPoints[x][y] = value;
+        }
+        else if(value == 0) {
+            for(int i = Math.max(x - 15, 0); i < Math.min(x + 15, 928); i++) {
+                for(int j = Math.max(y - 15, 0); j < Math.min(y + 15, 424); j++) {
+                    drawingPoints[i][j] = 0;
+                }
             }
         }
-        GameLog.log("converted...");
-        return RunLength.encode(result);
     }
 
     public void clear() {
