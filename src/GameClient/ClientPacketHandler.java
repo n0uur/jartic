@@ -93,6 +93,11 @@ public class ClientPacketHandler implements Runnable {
 
                         gameClient.newSelectWord(wordPacket.words[0], wordPacket.words[1]);
                     }
+                    else if(currentWork.PacketId == Packet.PacketID.S2C_UpdateWhiteBoard) {
+                        S2C_UpdateWhiteBoard whiteBoardPacket = (S2C_UpdateWhiteBoard) currentWork;
+
+                        this.gameClient.getDrawingBoard().fromString(whiteBoardPacket.whiteboard);
+                    }
                 }
             }
             else {

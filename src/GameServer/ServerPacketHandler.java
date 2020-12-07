@@ -154,9 +154,28 @@ public class ServerPacketHandler implements Runnable {
                             } else {
                                 ServerLog.error("Player selecting word while server is not require!.");
                             }
-                        } else if (currentWork.PacketId == Packet.PacketID.C2S_UpdateWhiteBoard) { // drawing player update his/her white board
-                            C2S_UpdateWhiteBoard gamePacket = (C2S_UpdateWhiteBoard) currentWork;
                         }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_UpdateWhiteBoard) { // drawing player update his/her white board
+                            C2S_UpdateWhiteBoard gamePacket = (C2S_UpdateWhiteBoard) currentWork;
+
+                            if(System.currentTimeMillis() - this.gameServer.getLastBroadcastWhiteboard() > 500) {
+                                this.gameServer.setLastBroadcastWhiteboard(System.currentTimeMillis());
+
+                                S2C_UpdateWhiteBoard whiteBoardPacket = new S2C_UpdateWhiteBoard();
+                                whiteBoardPacket.whiteboard = gamePacket.currentBoard;
+                                whiteBoardPacket.broadcastToClient();
+                            }
+                        }
+                        else if (currentWork.PacketId == Packet.PacketID.C2S_GameClose) {
+
+                            S2C_ChatMessage leftMessage = new S2C_ChatMessage();
+                            leftMessage.flag = S2C_ChatMessage.messageFlag.MESSAGE_DANGER;
+                            leftMessage.message = packetServerPlayer.getPlayerProfile().getName() + " has left the game.";
+                            leftMessage.broadcastToClient();
+
+                            packetServerPlayer.remove();
+                        }
+
 
 
                         // more packet to add above

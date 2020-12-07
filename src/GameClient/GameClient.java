@@ -5,11 +5,9 @@ import GameClient.Model.LocalPlayerData;
 import GameClient.Network.ClientNetworkListener;
 import GameClient.UI.SelectWord;
 import Shared.Logger.GameLog;
-import Shared.Model.GamePacket.C2S_ChatMessage;
-import Shared.Model.GamePacket.C2S_GameClose;
-import Shared.Model.GamePacket.C2S_JoinGame;
+import Shared.Model.DrawingBoard;
+import Shared.Model.GamePacket.*;
 import GameServer.Model.ServerPacket;
-import Shared.Model.GamePacket.C2S_SelectWord;
 import Shared.Model.GameServerStatus;
 
 import javax.swing.*;
@@ -34,8 +32,6 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     private long lastServerResponse;
 
-    private int[][] drawPoints;
-
     private GameServerStatus gameServerState;
 
     private boolean isDrawer;
@@ -43,7 +39,6 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     private String hintWord;
     private int timer;
 
-    protected int[][] points = new int[928][424];
     private boolean dragging = false;
     private Point last;
     private boolean isErasing;
@@ -58,7 +53,12 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     private SelectWord selectWord;
 
+    private DrawingBoard drawingBoard;
+    private long lastUpdateDrawingBoard;
+
     public GameClient() {
+
+        this.drawingBoard = new DrawingBoard(928, 424);
 
         this.gameClientView = new GameClientView(this);
 
@@ -94,8 +94,6 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
         this.realWord = "";
         this.hintWord = "";
-
-        this.drawPoints = new int[928][424];
     }
 
     public void update() {
@@ -243,7 +241,7 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     }
 
     public int[][] getPoints() {
-        return points;
+        return this.drawingBoard.getDrawingPoints();
     }
 
     @Override
@@ -256,15 +254,24 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
             if(dragging && isDrawer()) {
                 if(e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
                     setErasing(false);
-                    points[e.getX()][e.getY()] = 1;
+                    this.drawingBoard.getDrawingPoints()[e.getX()][e.getY()] = 1;
                 }
                 else {
                     setErasing(true);
                     for(int i = Math.max(e.getX() - 15, 0); i < Math.min(e.getX() + 15, 928); i++) {
                         for(int j = Math.max(e.getY() - 15, 0); j < Math.min(e.getY() + 15, 424); j++) {
-                            points[i][j] = 0;
+                            this.drawingBoard.getDrawingPoints()[i][j] = 0;
                         }
                     }
+                }
+
+                if(System.currentTimeMillis() - lastUpdateDrawingBoard > 500) {
+                    lastUpdateDrawingBoard = System.currentTimeMillis();
+
+                    C2S_UpdateWhiteBoard whiteBoardPacket = new C2S_UpdateWhiteBoard();
+                    whiteBoardPacket.currentBoard = this.drawingBoard.toString();
+                    whiteBoardPacket.sendToServer();
+
                 }
             }
         }catch (ArrayIndexOutOfBoundsException Ignored){}
@@ -363,4 +370,10 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
     public void windowDeactivated(WindowEvent e) {
 
     }
+
+    public DrawingBoard getDrawingBoard() {
+        return drawingBoard;
+    }
+
+
 }

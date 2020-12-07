@@ -49,6 +49,8 @@ public class GameServer {
 
     private int answerScore;
 
+    private long lastBroadcastWhiteboard;
+
     //
 
     public GameServer() {
@@ -387,5 +389,13 @@ public class GameServer {
 
     public void setDrawingPlayer(ServerPlayer drawingPlayer) {
         this.drawingPlayer = drawingPlayer;
+    }
+
+    public long getLastBroadcastWhiteboard() {
+        return lastBroadcastWhiteboard;
+    }
+
+    public void setLastBroadcastWhiteboard(long lastBroadcastWhiteboard) {
+        this.lastBroadcastWhiteboard = lastBroadcastWhiteboard;
     }
 }
