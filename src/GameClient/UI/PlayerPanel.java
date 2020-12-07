@@ -69,6 +69,7 @@ public class PlayerPanel extends JPanel {
                 }
             }
             if(!hasValue) {
+                this.remove(playerComponentEntry.getValue().getPlayerPanel());
                 iterator.remove();
             }
         }
