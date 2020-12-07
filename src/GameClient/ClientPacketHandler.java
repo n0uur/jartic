@@ -7,6 +7,7 @@ import GameClient.UI.SelectWord;
 import GameServer.Model.ServerPacket;
 import Shared.Logger.GameLog;
 import Shared.Model.GamePacket.*;
+import Shared.Model.GameServerStatus;
 import Shared.Model.PlayerProfile;
 
 import javax.swing.*;
@@ -64,8 +65,6 @@ public class ClientPacketHandler implements Runnable {
                     }
                     else if(currentWork.PacketId == Packet.PacketID.S2C_UpdateServerData) {
 
-                        // todo : check if you are drawer and lost your turn, destroy word selection menu
-
                         S2C_UpdateServerData serverData = (S2C_UpdateServerData) currentWork;
 
                         ClientPlayer.updatePlayers(serverData.playersProfile);
@@ -86,6 +85,8 @@ public class ClientPacketHandler implements Runnable {
 
                         gameClient.setGameServerState(serverData.gameServerStatus);
 
+                        if(serverData.gameServerStatus == GameServerStatus.GAME_NEXT_PLAYER)
+                            gameClient.destroySelectWord();
                         gameClient.getGameClientView().drawPlayers();
 
                     }
@@ -97,8 +98,6 @@ public class ClientPacketHandler implements Runnable {
                     }
                     else if(currentWork.PacketId == Packet.PacketID.S2C_RequestWord) {
                         S2C_RequestWord wordPacket = (S2C_RequestWord) currentWork;
-
-                        // todo : destroy old menu before creating new one...
 
                         gameClient.newSelectWord(wordPacket.words[0], wordPacket.words[1]);
                     }

@@ -246,13 +246,12 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     @Override
     public void mouseExited(MouseEvent e) {
-//        setErasing(false);
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         try {
-            if(dragging ) {
+            if(dragging && isDrawer()) {
                 if(e.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK) {
                     setErasing(false);
                     points[e.getX()][e.getY()] = 1;
@@ -310,6 +309,12 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     public void newSelectWord(String word1, String word2) {
         selectWord = new SelectWord( this ,word1, word2);
+    }
+
+    public void destroySelectWord() {
+        try {
+            selectWord.getSelectWordFrame().dispose();
+        }catch (NullPointerException Ignored){}
     }
 
     public int getTimer() {
