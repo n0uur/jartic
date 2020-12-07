@@ -75,7 +75,7 @@ public class ServerPacketHandler implements Runnable {
                                             chatPacket.broadcastToClient();
                                         }
                                         else {
-                                            if(this.gameServer.getDrawingWord().equals(gamePacket.message)) {
+                                            if(this.gameServer.getDrawingWord().toLowerCase().equals(gamePacket.message.toLowerCase())) {
                                                 S2C_ChatMessage chatPacket = new S2C_ChatMessage();
                                                 chatPacket.message = gamePacket.message +
                                                         " is the correct answer! ("+
