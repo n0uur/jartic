@@ -153,7 +153,7 @@ public class GameServer {
             }
 
             S2C_ChatMessage chatPacket = new S2C_ChatMessage();
-            chatPacket.message = "[Server] Drawing queue";
+            chatPacket.message = "[Server] Drawing queue" + queue;
             chatPacket.broadcastToClient();
 
             this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
