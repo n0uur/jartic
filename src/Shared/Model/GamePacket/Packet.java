@@ -11,6 +11,7 @@ public abstract class Packet {
         C2S_RequestUpdateWhiteBoard, // not using, server will auto sent an updates.
         C2S_SelectWord,
         C2S_UpdateWhiteBoard,
+        C2S_GameClose,
 
         S2C_AcceptJoinGameRequest,
         S2C_ChatMessage,

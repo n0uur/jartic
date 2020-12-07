@@ -4,7 +4,9 @@ import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
 import GameClient.Network.ClientNetworkListener;
 import GameClient.UI.SelectWord;
+import Shared.Logger.GameLog;
 import Shared.Model.GamePacket.C2S_ChatMessage;
+import Shared.Model.GamePacket.C2S_GameClose;
 import Shared.Model.GamePacket.C2S_JoinGame;
 import GameServer.Model.ServerPacket;
 import Shared.Model.GamePacket.C2S_SelectWord;
@@ -15,7 +17,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class GameClient implements MouseListener, MouseMotionListener, KeyListener, ActionListener{
+public class GameClient implements MouseListener, MouseMotionListener, KeyListener, ActionListener, WindowListener{
     private boolean isClicked = false;
     private GameClientView gameClientView;
     private int mouseBtn, posXMouse, posYMouse;
@@ -323,5 +325,42 @@ public class GameClient implements MouseListener, MouseMotionListener, KeyListen
 
     public void setTimer(int timer) {
         this.timer = timer;
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        C2S_GameClose closePacket = new C2S_GameClose();
+        closePacket.sendToServer();
+        GameLog.warn("Closing...");
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }

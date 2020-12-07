@@ -60,7 +60,7 @@ public class GameClientView extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1280, 768));
         setResizable(false);
-
+        addWindowListener(gameClient);
 //        playerList.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 //        playerList.setPreferredSize(new java.awt.Dimension(320, 60));
 //        playerList.setLayout(new java.awt.GridLayout(12, 0));
