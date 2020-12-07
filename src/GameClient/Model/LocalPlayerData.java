@@ -64,7 +64,7 @@ public class LocalPlayerData {
                 while ((i = fIn.read()) != -1) {
                     playerName += (char) i;
                 }
-                GameLog.Log("loaded name from save..");
+                GameLog.log("loaded name from save..");
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -76,13 +76,13 @@ public class LocalPlayerData {
         File playerNameFile = new File(saveFileName);
         if(playerNameFile.exists()) {
             playerNameFile.delete();
-            GameLog.Log("deleted old save..");
+            GameLog.log("deleted old save..");
         }
         try(FileOutputStream fOut = new FileOutputStream(playerNameFile);) {
             for(int i = 0; i < name.length(); i++) {
                 fOut.write(name.charAt(i));
             }
-            GameLog.Log("saved new name successfully..");
+            GameLog.log("saved new name successfully..");
         }
         catch (IOException e) {
             e.printStackTrace();

@@ -102,7 +102,7 @@ public class GameMainMenuView {
     }
 
     public void setShowingJoinMenu(boolean showing) {
-        GameLog.Log("updating join game menu.. " + showing);
+        GameLog.log("updating join game menu.. " + showing);
         this.isShowingJoinMenu = showing;
         this.updateMainMenu();
     }
