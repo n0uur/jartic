@@ -37,7 +37,7 @@ public class ClientPlayer {
             PlayerProfile newPlayer = newPlayers.get(i);
 
             new ClientPlayer(newPlayer);
-            GameLog.log("updated player : " + newPlayer.getName() + " (" + newPlayer.getId() + ")");
+//            GameLog.log("updated player : " + newPlayer.getName() + " (" + newPlayer.getId() + ")");
         }
 
 

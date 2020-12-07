@@ -16,8 +16,10 @@ public class PlayerComponent {
     private BufferedImage bfImg;
     private Border padding;
     private int playerScore;
+    private int id;
 
-    public PlayerComponent(String playerName, int playerScore) {
+    public PlayerComponent(String playerName, int playerScore, int id) {
+        this.id = id;
         this.playerScore = playerScore;
         this.playerPanel = new JPanel();
         this.playerInfoPanel = new JPanel();
@@ -46,6 +48,18 @@ public class PlayerComponent {
 
         this.playerPanel.setPreferredSize(new Dimension (290, 70));
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void update() {
+        this.playerScoreLabel.setText("Score : " + playerScore);
     }
 
     public void setPlayerName(String playerName) {

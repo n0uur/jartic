@@ -75,14 +75,6 @@ public class ClientPacketHandler implements Runnable {
 
                         gameClient.isDrawer(serverData.drawerId == LocalPlayerData.getId());
 
-//                        for (PlayerProfile profile:
-//                            serverData.playersProfile) {
-//                            if(profile.getId() == LocalPlayerData.getId()) {
-//                                gameClient.isDrawer(profile.isDrawing());
-//                                break;
-//                            }
-//                        }
-
                         gameClient.setGameServerState(serverData.gameServerStatus);
 
                         if(serverData.gameServerStatus == GameServerStatus.GAME_NEXT_PLAYER)

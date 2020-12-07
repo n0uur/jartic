@@ -16,7 +16,7 @@ public class GameClientView extends javax.swing.JFrame {
     private javax.swing.JTextField chatMsgInput;
 
     private javax.swing.JLabel currentDrawing;
-    private javax.swing.JPanel jPanel2, jPanel3, playerList, canvasPanel;
+    private javax.swing.JPanel jPanel2, jPanel3, canvasPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel player;
     private GameClient gameClient;
@@ -44,7 +44,6 @@ public class GameClientView extends javax.swing.JFrame {
 
     public GameClientView(GameClient gameClient) {
         this.gameClient = gameClient;
-        playerList = new javax.swing.JPanel();
         player = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         canvas1 = new java.awt.Canvas();
@@ -62,15 +61,15 @@ public class GameClientView extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1280, 768));
         setResizable(false);
 
-        playerList.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        playerList.setPreferredSize(new java.awt.Dimension(320, 60));
-        playerList.setLayout(new java.awt.GridLayout(12, 0));
-
-        player.setFont(FontManager.getFont().deriveFont(40f)); // NOI18N
-        player.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        player.setText("Players");
-
-        playerList.add(player);
+//        playerList.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+//        playerList.setPreferredSize(new java.awt.Dimension(320, 60));
+//        playerList.setLayout(new java.awt.GridLayout(12, 0));
+//
+//        player.setFont(FontManager.getFont().deriveFont(40f)); // NOI18N
+//        player.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+//        player.setText("Players");
+//
+//        playerList.add(player);
 
 //        for (int i = 1; i < 12; i++)
 //            playerList.add(new PlayerComponent("Tester " + i).getPlayerPanel());
@@ -120,7 +119,7 @@ public class GameClientView extends javax.swing.JFrame {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(playerList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(playerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -142,7 +141,7 @@ public class GameClientView extends javax.swing.JFrame {
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(playerList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(playerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
 
@@ -167,7 +166,6 @@ public class GameClientView extends javax.swing.JFrame {
     }
 
     public void drawPlayers() {
-        playerPanel.repaint();
 //        playerList.removeAll();
 //        playerList.add(player);
 //
@@ -177,7 +175,10 @@ public class GameClientView extends javax.swing.JFrame {
 //
 //        this.revalidate();
 //        this.repaint();
-        GameLog.log("updating player..." + ClientPlayer.getPlayers().size());
+//        GameLog.log("updating player..." + ClientPlayer.getPlayers().size());
+
+//        playerPanel.revalidate();
+        playerPanel.repaint();
 
     }
     public void scrollToBottom() {

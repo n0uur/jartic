@@ -53,7 +53,7 @@ public class ClientNetworkListener implements Runnable {
 
                 this.gameClient.addServerPacket(realPacket);
 
-                GameLog.log("Incoming packet from server : " + packetName);
+//                GameLog.log("Incoming packet from server : " + packetName);
 
                 this.gameClient.serverResponse();
 
