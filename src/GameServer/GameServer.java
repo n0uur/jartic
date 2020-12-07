@@ -146,6 +146,16 @@ public class GameServer {
 
             ServerLog.log("Randomized drawing queue!");
 
+            String queue = "";
+
+            for(ServerPlayer player: this.playerDrawingQueue) {
+                queue += " " + player.getPlayerProfile().getName();
+            }
+
+            S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+            chatPacket.message = "[Server] Drawing queue";
+            chatPacket.broadcastToClient();
+
             this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
 
         }
@@ -162,12 +172,16 @@ public class GameServer {
                 ServerLog.warn(drawingPlayer.getPlayerProfile().getName() + " has lost his/her turn..");
                 this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
                 isStartWaitingWord = false;
+
+                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                chatPacket.message = "[Server] " + this.drawingPlayer.getPlayerProfile().getName() + " has lost his turn...";
+                chatPacket.broadcastToClient();
             }
         }
 
         else if(this.getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
 
-            if(currentTime - this.startPlayingTime > 30000) { // more than 30 seconds stop it!
+            if(currentTime - this.startPlayingTime > 90000) { // more than 30 seconds stop it!
                 this.setCurrentGameStatus(GameServerStatus.GAME_NEXT_PLAYER);
             }
 
@@ -207,6 +221,10 @@ public class GameServer {
 
                 setAnswerScore(10);
 
+                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                chatPacket.message = "[Server] " + this.drawingPlayer.getPlayerProfile().getName() + " is selecting words...";
+                chatPacket.broadcastToClient();
+
                 // clear canvas
                 S2C_UpdateWhiteBoard whiteBoardPacket = new S2C_UpdateWhiteBoard();
                 whiteBoardPacket.needToClear = true;
@@ -231,9 +249,19 @@ public class GameServer {
             }
 
             if(maxScorePlayer.getPlayerProfile().getScore() >= 120) {
+
+                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                chatPacket.message = "[Server] Round ended! THE WINNER IS " + maxScorePlayer.getPlayerProfile().getName() + " !!";
+                chatPacket.broadcastToClient();
+
                 this.setCurrentGameStatus(GameServerStatus.GAME_ENDED);
             }
             else {
+
+                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                chatPacket.message = "[Server] Round ended! Still no winner let's start new round!";
+                chatPacket.broadcastToClient();
+
                 this.setCurrentGameStatus(GameServerStatus.GAME_STARTING_ROUND);
             }
 
@@ -279,7 +307,7 @@ public class GameServer {
     }
 
     public int getDrawingTimeLeft() {
-        return (int) ((this.startPlayingTime + 30000 - System.currentTimeMillis()) / 1000);
+        return (int) ((this.startPlayingTime + 90000 - System.currentTimeMillis()) / 1000);
     }
 
     public int getAnswerScore() {
@@ -352,7 +380,7 @@ public class GameServer {
             timeLeft = (int) ((this.gameEndedBroadcastScoreTime + 10000 - currentTime) / 1000);
         }
         else if(getCurrentGameStatus() == GameServerStatus.GAME_PLAYING) {
-            timeLeft = (int) ((this.startPlayingTime + 30000 - currentTime) / 1000);
+            timeLeft = (int) ((this.startPlayingTime + 90000 - currentTime) / 1000);
         }
         else if(getCurrentGameStatus() == GameServerStatus.GAME_STARTING) {
             // todo : add interval for starting game and calculate time left...

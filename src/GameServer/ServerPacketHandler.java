@@ -94,7 +94,7 @@ public class ServerPacketHandler implements Runnable {
                                                 ServerLog.warn((this.gameServer.getDrawingTimeLeft() / 3) + "");
 
                                                 this.gameServer.getDrawingPlayer().getPlayerProfile().setScore(
-                                                        this.gameServer.getDrawingPlayer().getPlayerProfile().getScore() + (this.gameServer.getDrawingTimeLeft() / 3)
+                                                        this.gameServer.getDrawingPlayer().getPlayerProfile().getScore() + (this.gameServer.getDrawingTimeLeft() / 9)
                                                 );
 
                                                 packetServerPlayer.getPlayerProfile().setScore(packetServerPlayer.getPlayerProfile().getScore() + this.gameServer.getAnswerScore());
@@ -112,7 +112,7 @@ public class ServerPacketHandler implements Runnable {
                                     else { // drawer type something...
                                         S2C_ChatMessage chatPacket = new S2C_ChatMessage();
                                         chatPacket.message = "[Server] You don't have permission to type anything at this time. JUST DRAW!";
-                                        chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_SUCCESS;
+                                        chatPacket.flag = S2C_ChatMessage.messageFlag.MESSAGE_DANGER;
                                         chatPacket.sendToClient(packetServerPlayer.getPeerId());
                                     }
 
@@ -150,6 +150,10 @@ public class ServerPacketHandler implements Runnable {
                                 this.gameServer.setCurrentGameStatus(GameServerStatus.GAME_PLAYING);
 
                                 ServerLog.log("Player selected : " + gamePacket.word);
+
+                                S2C_ChatMessage chatPacket = new S2C_ChatMessage();
+                                chatPacket.message = "[Server] " + this.gameServer.getDrawingPlayer().getPlayerProfile().getName() + " has selected word! LET'S GO!";
+                                chatPacket.broadcastToClient();
 
                             } else {
                                 ServerLog.error("Player selecting word while server is not require!.");

@@ -9,7 +9,7 @@ import java.util.Collections;
 
 public class WordList {
 
-    private static final String saveFileName = "words.txt";
+    private static final String saveFileName = "minecraft.txt";
 
     private static ArrayList<String> wordList;
 
