@@ -26,6 +26,7 @@ public class SelectWord {
         selectWordFrame.setLayout(new BorderLayout());
         buttonPanel.setLayout(new GridLayout(1, 2));
         selectWordFrame.setResizable(false);
+        selectWordFrame.setAlwaysOnTop(true);
 
         Dimension wordD = new Dimension();
         wordD.width = 100;
