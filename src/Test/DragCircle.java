@@ -3,6 +3,7 @@ package Test;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
@@ -44,7 +45,16 @@ class DragCircle extends JPanel {
         @Override
         public void mouseDragged(MouseEvent m) {
             if(dragging) {
-                points[m.getX()][m.getY()] = 1;
+//                System.out.println(m);
+                if(m.getModifiersEx() == InputEvent.BUTTON1_DOWN_MASK)
+                    points[m.getX()][m.getY()] = 1;
+                else {
+                    for(int i = Math.max(m.getX() - 10, 0); i < Math.min(m.getX() + 10, 800); i++) {
+                        for(int j = Math.max(m.getY() - 10, 0); j < Math.min(m.getY() + 10, 400); j++) {
+                            points[i][j] = 0;
+                        }
+                    }
+                }
             }
 //            int dx = m.getX() - last.x;
 //            int dy = m.getY() - last.y;
