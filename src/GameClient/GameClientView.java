@@ -144,7 +144,6 @@ public class GameClientView extends javax.swing.JFrame {
 
         pack();
         setVisible(true);
-        GameLog.warn(this.jPanel2.getSize() + "");
     }
 
     public void doDrawing(int mousePosX, int mousePosY, int mouseBtn) {
