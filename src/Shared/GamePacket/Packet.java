@@ -1,4 +1,4 @@
-package Shared.Model.GamePacket;
+package Shared.GamePacket;
 
 public abstract class Packet {
 

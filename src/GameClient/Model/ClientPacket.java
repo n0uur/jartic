@@ -1,9 +1,8 @@
 package GameClient.Model;
 
-import GameClient.Model.LocalPlayerData;
 import GameClient.Model.Network.NetworkSocket;
 import Shared.Model.GameConfig;
-import Shared.Model.GamePacket.Packet;
+import Shared.GamePacket.Packet;
 import com.google.gson.Gson;
 
 import java.io.IOException;

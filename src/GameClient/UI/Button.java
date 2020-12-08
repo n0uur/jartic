@@ -1,7 +1,5 @@
 package GameClient.UI;
 
-import GameClient.UI.Drawable;
-import com.raylib.Jaylib;
 import com.raylib.Raylib;
 
 import static com.raylib.Jaylib.*;

@@ -2,7 +2,6 @@ package GameClient.UI;
 
 import GameClient.GameClientView;
 import GameClient.Model.ClientPlayer;
-import Shared.Logger.GameLog;
 
 import javax.swing.*;
 import java.awt.*;

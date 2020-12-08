@@ -3,16 +3,13 @@ package GameClient;
 import GameClient.Model.ClientPlayer;
 import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
-import GameClient.UI.SelectWord;
 import GameServer.Model.ServerPacket;
 import Shared.Logger.GameLog;
-import Shared.Model.GamePacket.*;
+import Shared.GamePacket.*;
 import Shared.Model.GameServerStatus;
-import Shared.Model.PlayerProfile;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 
 public class ClientPacketHandler implements Runnable {
 

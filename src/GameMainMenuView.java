@@ -2,7 +2,7 @@ import GameClient.Model.LocalPlayerData;
 import Shared.Logger.GameLog;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class GameMainMenuView {

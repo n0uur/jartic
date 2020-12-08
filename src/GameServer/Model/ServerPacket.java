@@ -1,8 +1,7 @@
 package GameServer.Model;
 
-import GameServer.Model.ServerPlayer;
 import GameServer.Network.ServerNetworkListener;
-import Shared.Model.GamePacket.Packet;
+import Shared.GamePacket.Packet;
 import com.google.gson.Gson;
 
 import java.io.IOException;

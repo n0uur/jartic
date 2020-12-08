@@ -1,8 +1,5 @@
 package Shared.Model;
 
-import Shared.Logger.GameLog;
-import Shared.RunLength;
-
 public class DrawingBoard {
     private int[][] drawingPoints;
     private int sizeX, sizeY;
