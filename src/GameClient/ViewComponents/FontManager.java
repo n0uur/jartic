@@ -1,4 +1,4 @@
-package GameClient.UI;
+package GameClient.ViewComponents;
 
 import java.awt.*;
 import java.io.File;

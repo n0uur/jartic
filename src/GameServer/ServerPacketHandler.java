@@ -1,6 +1,6 @@
 package GameServer;
 
-import GameClient.Model.ClientPacket;
+import Shared.GamePacket.ClientPacket;
 import GameServer.Model.ServerPlayer;
 import Shared.Logger.ServerLog;
 import Shared.Model.GameConfig;

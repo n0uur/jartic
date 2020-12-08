@@ -1,8 +1,8 @@
 package GameClient;
 
-import GameClient.UI.CanvasPanel;
-import GameClient.UI.FontManager;
-import GameClient.UI.PlayerPanel;
+import GameClient.ViewComponents.CanvasPanel;
+import GameClient.ViewComponents.FontManager;
+import GameClient.ViewComponents.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;

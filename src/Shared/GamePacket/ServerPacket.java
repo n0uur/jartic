@@ -1,5 +1,6 @@
-package GameServer.Model;
+package Shared.GamePacket;
 
+import GameServer.Model.ServerPlayer;
 import GameServer.Network.ServerNetworkListener;
 import Shared.GamePacket.Packet;
 import com.google.gson.Gson;

@@ -3,7 +3,7 @@ package GameClient;
 import GameClient.Model.ClientPlayer;
 import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
-import GameServer.Model.ServerPacket;
+import Shared.GamePacket.ServerPacket;
 import Shared.Logger.GameLog;
 import Shared.GamePacket.*;
 import Shared.Model.GameServerStatus;

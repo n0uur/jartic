@@ -2,7 +2,7 @@ package GameClient.Network;
 
 import GameClient.GameClient;
 import GameClient.Model.Network.NetworkSocket;
-import GameServer.Model.ServerPacket;
+import Shared.GamePacket.ServerPacket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;

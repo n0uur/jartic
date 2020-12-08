@@ -1,4 +1,4 @@
-package GameClient.UI;
+package GameClient.ViewComponents;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

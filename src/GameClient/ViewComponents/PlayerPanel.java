@@ -1,4 +1,4 @@
-package GameClient.UI;
+package GameClient.ViewComponents;
 
 import GameClient.GameClientView;
 import GameClient.Model.ClientPlayer;

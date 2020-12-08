@@ -1,6 +1,5 @@
 package Shared.GamePacket;
 
-import GameServer.Model.ServerPacket;
 import Shared.Model.GameServerStatus;
 import Shared.Model.PlayerProfile;
 

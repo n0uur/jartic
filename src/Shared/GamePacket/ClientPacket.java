@@ -1,5 +1,6 @@
-package GameClient.Model;
+package Shared.GamePacket;
 
+import GameClient.Model.LocalPlayerData;
 import GameClient.Model.Network.NetworkSocket;
 import Shared.Model.GameConfig;
 import Shared.GamePacket.Packet;
