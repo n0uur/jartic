@@ -4,10 +4,10 @@ import GameClient.Model.GameClientStatus;
 import GameClient.Model.LocalPlayerData;
 import GameClient.Network.ClientNetworkListener;
 import GameClient.UI.SelectWord;
+import GameServer.Model.ServerPacket;
 import Shared.Logger.GameLog;
 import Shared.Model.DrawingBoard;
-import Shared.Model.GamePacket.*;
-import GameServer.Model.ServerPacket;
+import Shared.GamePacket.*;
 import Shared.Model.GameServerStatus;
 
 import javax.swing.*;

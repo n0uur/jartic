@@ -3,8 +3,8 @@ package GameServer;
 import GameClient.Model.ClientPacket;
 import GameServer.Model.ServerPlayer;
 import Shared.Logger.ServerLog;
-import Shared.Model.GamePacket.*;
 import Shared.Model.GameConfig;
+import Shared.GamePacket.*;
 import Shared.Model.GameServerStatus;
 
 public class ServerPacketHandler implements Runnable {

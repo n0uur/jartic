@@ -1,10 +1,8 @@
 package GameClient.Model;
 
-import Shared.Logger.GameLog;
 import Shared.Model.PlayerProfile;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ClientPlayer {
     public static ArrayList<ClientPlayer> players;

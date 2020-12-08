@@ -3,7 +3,6 @@ package GameClient.Network;
 import GameClient.GameClient;
 import GameClient.Model.Network.NetworkSocket;
 import GameServer.Model.ServerPacket;
-import Shared.Logger.GameLog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -47,7 +46,7 @@ public class ClientNetworkListener implements Runnable {
 
                 String packetName = JsonParser.parseString(jsonString).getAsJsonObject().get("PacketId").getAsString();
 
-                Class<?> packetClass = Class.forName("Shared.Model.GamePacket." + packetName);
+                Class<?> packetClass = Class.forName("Shared.GamePacket." + packetName);
 
                 ServerPacket realPacket = gson.fromJson(jsonString, (Type) packetClass);
 

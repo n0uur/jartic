@@ -1,7 +1,7 @@
 package GameServer.Network;
 
-import GameServer.GameServer;
 import GameClient.Model.ClientPacket;
+import GameServer.GameServer;
 import Shared.Model.GameConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,7 +9,9 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.Arrays;
 
 public class ServerNetworkListener implements Runnable {
@@ -64,7 +66,7 @@ public class ServerNetworkListener implements Runnable {
 
                 String packetName = JsonParser.parseString(jsonString).getAsJsonObject().get("PacketId").getAsString();
 
-                Class<?> packetClass = Class.forName("Shared.Model.GamePacket." + packetName);
+                Class<?> packetClass = Class.forName("Shared.GamePacket." + packetName);
 
                 ClientPacket realPacket = gson.fromJson(jsonString, (Type) packetClass);
 

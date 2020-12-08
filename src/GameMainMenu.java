@@ -1,6 +1,4 @@
-import GameClient.GameClient;
 import GameClient.Model.LocalPlayerData;
-import Shared.Model.GamePacket.C2S_JoinGame;
 import Shared.Model.GameConfig;
 
 import java.awt.event.ActionEvent;

@@ -1,11 +1,11 @@
 package GameServer;
 
+import GameClient.Model.ClientPacket;
 import GameServer.Model.ServerPlayer;
 import GameServer.Model.WordList;
 import GameServer.Network.ServerNetworkListener;
-import GameClient.Model.ClientPacket;
 import Shared.Logger.ServerLog;
-import Shared.Model.GamePacket.*;
+import Shared.GamePacket.*;
 import Shared.Model.GameServerStatus;
 import Shared.Model.PlayerProfile;
 
