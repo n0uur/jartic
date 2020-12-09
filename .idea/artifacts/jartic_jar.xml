@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jartic:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jartic_jar</output-path>
+    <root id="archive" name="jartic.jar">
+      <element id="module-output" name="jartic" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/gson-2.8.6.jar" path-in-jar="/" />
+      <element id="library" level="project" name="gson-2.8.6" />
+    </root>
+  </artifact>
+</component>
